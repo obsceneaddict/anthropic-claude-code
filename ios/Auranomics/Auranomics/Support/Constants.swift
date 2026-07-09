@@ -15,9 +15,11 @@ enum Constants {
     }
 
     enum Links {
-        static let privacyPolicy = URL(string: "https://auranomics.app/privacy")!
-        static let termsOfUse = URL(string: "https://auranomics.app/terms")!
-        static let support = URL(string: "https://auranomics.app/support")!
+        // Source for these pages: docs/site/*.html. Hosted via GitHub Pages by default —
+        // swap to a custom domain any time by editing only these three lines.
+        static let privacyPolicy = URL(string: "https://obsceneaddict.github.io/anthropic-claude-code/site/privacy.html")!
+        static let termsOfUse = URL(string: "https://obsceneaddict.github.io/anthropic-claude-code/site/terms.html")!
+        static let support = URL(string: "https://obsceneaddict.github.io/anthropic-claude-code/site/support.html")!
     }
 
     static let appGroupSuggestedForWidget = "group.com.codeofreality.auranomics"

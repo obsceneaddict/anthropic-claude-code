@@ -23,7 +23,9 @@ compiling SwiftUI/Swift — not pseudocode.
 5. In Finder, drag the entire `Auranomics/` subfolder from this repo
    (the one containing `AuranomicsApp.swift`, `Models/`, `Views/`, etc.)
    into your Xcode project navigator, **replacing** the app's root folder.
-   Check "Copy items if needed" and "Create groups".
+   Check "Copy items if needed" and "Create groups". Also drag in
+   `Auranomics.storekit` (sits next to this README) — needed for local
+   IAP testing, see the StoreKit Configuration step below.
 6. Delete the placeholder `Assets.xcassets` Xcode generated, keep the one
    from this repo (or merge — you'll want to add a real 1024×1024 app icon
    into `AppIcon.appiconset` before shipping; `Contents.json` is already set up).
@@ -36,10 +38,14 @@ You should land on the onboarding flow, then the Home tab with a seeded
 
 - [ ] Add a real app icon (1024×1024 PNG, no alpha) to `AppIcon.appiconset`.
 - [ ] In **Signing & Capabilities**, set your team and let Xcode manage signing.
+- [ ] `Services/PaywallStore.swift` already uses real StoreKit 2 (`Product.products`,
+      `purchase()`, `Transaction.currentEntitlements`/`updates`) — no mock to replace.
+      For local testing before App Store Connect products exist, select
+      `Auranomics.storekit` under Product → Scheme → Edit Scheme → Options →
+      StoreKit Configuration.
 - [ ] Create the 3 IAP products in App Store Connect matching the identifiers
-      in `Support/Constants.swift` (`Constants.IAP`), then replace the mock
-      `purchase`/`restore` logic in `Services/PaywallStore.swift` with real
-      StoreKit 2 calls (the TODO comment in that file spells out the exact steps).
+      in `Support/Constants.swift` (`Constants.IAP`) and get them to
+      "Ready to Submit" status before submitting the app for review.
 - [ ] Publish real Privacy Policy / Terms pages and update
       `Constants.Links` — the in-app "Settings → Privacy/Terms" screens
       currently show a `DO WERYFIKACJI` placeholder pointing here.

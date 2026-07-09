@@ -29,15 +29,15 @@ struct SettingsView: View {
                         Toggle("Haptics", isOn: $hapticsEnabled)
                             .padding(16)
                         Divider().background(.white.opacity(0.1))
-                        NavigationLink(destination: WebLinkView(url: Constants.Links.privacyPolicy, title: "Privacy Policy")) {
+                        Link(destination: Constants.Links.privacyPolicy) {
                             settingsRow("Privacy Policy")
                         }
                         Divider().background(.white.opacity(0.1))
-                        NavigationLink(destination: WebLinkView(url: Constants.Links.termsOfUse, title: "Terms of Use")) {
+                        Link(destination: Constants.Links.termsOfUse) {
                             settingsRow("Terms of Use")
                         }
                         Divider().background(.white.opacity(0.1))
-                        NavigationLink(destination: WebLinkView(url: Constants.Links.support, title: "Support")) {
+                        Link(destination: Constants.Links.support) {
                             settingsRow("Contact Support")
                         }
                     }
@@ -78,28 +78,8 @@ struct SettingsView: View {
         HStack {
             Text(title).foregroundStyle(.white).font(.system(size: 15))
             Spacer()
-            Image(systemName: "chevron.right").foregroundStyle(.white.opacity(0.3)).font(.system(size: 12))
+            Image(systemName: "arrow.up.right").foregroundStyle(.white.opacity(0.3)).font(.system(size: 12))
         }
         .padding(16)
-    }
-}
-
-struct WebLinkView: View {
-    let url: URL
-    let title: String
-
-    var body: some View {
-        ZStack {
-            GradientBackground()
-            VStack(spacing: 16) {
-                Text(title).font(.system(size: 20, weight: .bold, design: .rounded)).foregroundStyle(.white)
-                Text("DO WERYFIKACJI: publish the real \(title.lowercased()) at \(url.absoluteString) before App Store submission.")
-                    .font(.system(size: 13))
-                    .foregroundStyle(.white.opacity(0.6))
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 32)
-            }
-        }
-        .preferredColorScheme(.dark)
     }
 }

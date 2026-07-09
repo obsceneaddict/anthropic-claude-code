@@ -233,6 +233,8 @@ Prompt użytkownika: surowy tekst wpisu (np. "spilled coffee on myself before a 
 
 ## CZĘŚĆ 9 — Pakiet App Store
 
+*Wersja skrócona/paste-ready do wklejenia bezpośrednio w App Store Connect, plus krok-po-kroku runbook na dziś: [`docs/LAUNCH_TODAY.md`](LAUNCH_TODAY.md).*
+
 1. **Nazwa:** Auranomics
 2. **Subtitle:** Track your aura, daily
 3. **Promotional text:** Every move changes your aura. Log it, flex it, share it.
@@ -252,10 +254,10 @@ Prompt użytkownika: surowy tekst wpisu (np. "spilled coffee on myself before a 
 7. **Kategoria:** Lifestyle (drugorzędna: Health & Fitness → *DO WERYFIKACJI*, może lepiej Entertainment ze względu na żartobliwy ton).
 8. **Age rating:** 12+ (ZAŁOŻENIE — swobodny/żartobliwy język w przykładach; brak treści dla dorosłych, brak UGC widocznego publicznie w MVP).
 9. **Privacy nutrition label (szkic):** Data Not Collected — wszystko lokalnie na urządzeniu w MVP (żadnego trackingu, żadnego backendu). Gdy dojdzie prawdziwy analytics SDK, zaktualizować o kategorię "Usage Data" powiązaną z użytkownikiem lub nie, zależnie od SDK.
-10. **Support URL:** `https://auranomics.app/support` *(placeholder — DO WERYFIKACJI/utworzenia)*
-11. **Marketing URL:** `https://auranomics.app` *(placeholder)*
-12. **Polityka prywatności (outline):** jakie dane (żadne przesyłane na serwer w MVP), gdzie przechowywane (lokalnie), IAP przez Apple (dane transakcji obsługuje Apple), brak reklam/trackerów stron trzecich, prawo do usunięcia danych (przycisk w Ustawieniach). *DO WERYFIKACJI przez prawnika przed publikacją.*
-13. **Terms of use (outline):** standardowy Apple EULA (można użyć domyślnego), zastrzeżenie że aplikacja jest rozrywkowa/self-tracking, nie stanowi porady zdrowotnej/psychologicznej. *DO WERYFIKACJI.*
+10. **Support URL:** `https://obsceneaddict.github.io/anthropic-claude-code/site/support.html` — realna strona, źródło w `docs/site/support.html` (patrz `docs/LAUNCH_TODAY.md` po instrukcję włączenia hostingu).
+11. **Marketing URL:** `https://obsceneaddict.github.io/anthropic-claude-code/site/index.html` — źródło w `docs/site/index.html`.
+12. **Polityka prywatności:** pełna wersja gotowa do publikacji w `docs/site/privacy.html` (realny link: `.../site/privacy.html`) — treść odzwierciedla faktyczne zachowanie appki (brak backendu, dane tylko lokalnie, IAP przez Apple). *DO WERYFIKACJI przez prawnika przed publikacją.*
+13. **Terms of use:** pełna wersja gotowa do publikacji w `docs/site/terms.html`. *DO WERYFIKACJI przez prawnika przed publikacją.*
 14. **Screenshots plan / 15. App preview video plan:** patrz Część 5.
 16. **Potencjalne powody odrzucenia:** (a) niejasność co IAP faktycznie odblokowuje — musi być 1:1 zgodne z paywallem, (b) brak działającego "Restore Purchases", (c) metadane sugerujące realne porady zdrowotne/psychologiczne, (d) placeholdery (Lorem ipsum, "DO WERYFIKACJI") widoczne w buildzie wysłanym do review.
 17. **Jak ich uniknąć:** przetestować pełny flow zakupu w Sandboxie przed wysyłką, usunąć wszystkie placeholdery tekstowe, jasno oznaczyć appkę jako rozrywkową/self-improvement, nie jako zdrowotną.
