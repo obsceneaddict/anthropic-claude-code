@@ -21,10 +21,27 @@ static host.
 ## What's inside
 
 - **18+ age gate** — remembered per session so it doesn't nag on every visit.
-- **Ambient "black silk" hero** — a slow canvas animation in wine/rose;
-  automatically frozen to a static frame when the visitor prefers reduced motion.
-- **Six collections**, discretion promise, editorial manifesto, newsletter, footer.
-- Dark-only by design (a boudoir; a light theme would be a different product).
+- **Product catalogue** — 8 items in a dense grid with working category filters
+  and a live result count.
+- **How we ship / Materials** — the discretion and body-safe-materials specs,
+  which are the real purchase drivers in this category.
+- Newsletter + footer. Dark-only by design.
+
+## Design tokens (client-approved, clean/technical direction)
+
+```
+ground    #0B0B0E      surface  #16161A / #1C1C21
+border    #26262C      strong   #33333B
+text      #EDEDEF      dim      #9A9AA3    faint  #6B6B75
+accent    #6E56CF      — interactive affordances only, never decorative
+semantic  #3DA95E ok   #C99A2E warn        — kept separate from the accent
+type      one sans, tight heading tracking, 16px base, 1.25 scale
+radius    6px          shadows  none/minimal
+```
+
+An earlier editorial version (Didot display type, wine/rose palette, animated
+canvas hero) is in git history if you want to compare:
+`git log --oneline -- web/rosenoir/index.html`
 
 ## Before you go live — quick checklist
 

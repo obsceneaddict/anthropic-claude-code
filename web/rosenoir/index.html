@@ -3,45 +3,62 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rose Noir — Objects of Desire, Refined</title>
-<meta name="description" content="Rose Noir is a premium boudoir house — silk, restraint, and instruments of pleasure, delivered in absolute discretion.">
-<meta name="theme-color" content="#140609">
-<meta property="og:title" content="Rose Noir — Objects of Desire, Refined">
-<meta property="og:description" content="A premium boudoir house. Discreet, considered, and quietly indulgent.">
+<title>Rose Noir — Premium Intimacy, Discreetly Delivered</title>
+<meta name="description" content="A curated premium sex shop. Body-safe materials, unbranded packaging, 24–48h delivery across Poland.">
+<meta name="theme-color" content="#0B0B0E">
+<meta property="og:title" content="Rose Noir — Premium Intimacy, Discreetly Delivered">
+<meta property="og:description" content="Curated, body-safe, and shipped in plain packaging.">
 <meta property="og:type" content="website">
 <!--
-  Rose Noir — single-page boudoir landing.
-  Deliberately committed to one dark visual world (a boudoir after dark);
-  a light theme would be a different product, so this page is dark-only by design.
-  Fully self-contained: no external fonts, scripts, images, or trackers.
-  Newsletter form is wired for Netlify Forms out of the box (data-netlify);
-  on any other host it degrades to the client-side success state only.
+  Rose Noir — clean/technical direction.
+  Token set approved by the client: cool neutral dark ground, indigo reserved
+  strictly for interactive affordances, single sans with tight heading tracking,
+  6px radii, minimal shadows, dense product grid.
+  Self-contained: no external fonts, scripts, images, or trackers.
+  Newsletter is wired for Netlify Forms; degrades to a client-side confirm elsewhere.
+  NOTE: product names/prices are placeholder catalog data — swap for the real inventory.
 -->
 <style>
   :root {
     color-scheme: dark;
 
-    /* Warm, layered noir palette — chosen, not a default black + one pop */
-    --noir:        #140609;
-    --noir-raised: #1E0A11;
-    --noir-veil:   rgba(10,4,6,0.72);
-    --oxblood:     #3D0A18;
-    --wine:        #7A1330;
-    --rose:        #D9A5AD;
-    --rose-soft:   #C98B96;
-    --champagne:   #C6A06B;
-    --champagne-dim: rgba(198,160,107,0.28);
-    --bone:        #EFE6DE;
-    --bone-dim:    rgba(239,230,222,0.60);
-    --bone-faint:  rgba(239,230,222,0.34);
-    --hairline:    rgba(198,160,107,0.22);
+    /* ground + surfaces */
+    --bg:        #0B0B0E;
+    --surface:   #16161A;
+    --surface-2: #1C1C21;
+    --border:    #26262C;
+    --border-strong: #33333B;
 
-    --font-display: 'Didot', 'Bodoni 72', 'Bodoni MT', 'Playfair Display', 'Times New Roman', Georgia, serif;
-    --font-sans: 'Avenir Next', 'Avenir', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    /* text */
+    --text:      #EDEDEF;
+    --text-dim:  #9A9AA3;
+    --text-faint:#6B6B75;
 
-    --measure: 62ch;
-    --pad-x: clamp(1.25rem, 5vw, 6rem);
-    --maxw: 1240px;
+    /* accent — interactive only, never decorative */
+    --accent:      #6E56CF;
+    --accent-hover:#7D66DB;
+    --accent-quiet:rgba(110,86,207,0.12);
+
+    /* semantic, distinct from accent */
+    --ok:   #3DA95E;
+    --warn: #C99A2E;
+
+    --font: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+    /* type scale, ratio 1.25 off a 16px base */
+    --t-xs:   12px;
+    --t-sm:   14px;
+    --t-base: 16px;
+    --t-lg:   20px;
+    --t-xl:   25px;
+    --t-2xl:  31px;
+    --t-3xl:  39px;
+    --t-4xl:  49px;
+
+    --r:    6px;
+    --r-sm: 4px;
+    --pad:  clamp(1rem, 4vw, 3rem);
+    --maxw: 1200px;
   }
 
   * { box-sizing: border-box; }
@@ -51,558 +68,468 @@
 
   body {
     margin: 0;
-    background: var(--noir);
-    color: var(--bone);
-    font-family: var(--font-sans);
-    font-size: 17px;
-    line-height: 1.65;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: var(--t-base);
+    line-height: 1.55;
     -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-    overflow-x: hidden;
   }
-
-  /* Fine film grain so large dark fields read as material, not flat pixels */
-  body::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 9;
-    opacity: 0.05;
-    mix-blend-mode: overlay;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
-
-  ::selection { background: var(--wine); color: var(--bone); }
 
   a { color: inherit; text-decoration: none; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: var(--r-sm); }
+  ::selection { background: var(--accent-quiet); }
 
-  :focus-visible {
-    outline: 1.5px solid var(--champagne);
-    outline-offset: 3px;
+  h1, h2, h3 { margin: 0; font-weight: 600; letter-spacing: -0.021em; text-wrap: balance; line-height: 1.15; }
+
+  .shell { max-width: var(--maxw); margin: 0 auto; padding-inline: var(--pad); }
+
+  .label {
+    font-size: var(--t-xs);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--text-dim);
   }
 
-  h1, h2, h3 { font-family: var(--font-display); font-weight: 400; margin: 0; text-wrap: balance; letter-spacing: 0.01em; }
-
-  .eyebrow {
-    font-family: var(--font-sans);
-    font-size: 0.72rem;
-    letter-spacing: 0.42em;
-    text-transform: uppercase;
-    color: var(--champagne);
-    font-weight: 600;
-  }
-
-  .shell { max-width: var(--maxw); margin: 0 auto; padding-inline: var(--pad-x); }
-
-  /* ---------------- Age gate ---------------- */
-  .gate {
-    position: fixed;
-    inset: 0;
-    z-index: 100;
-    display: grid;
-    place-items: center;
-    padding: 2rem;
-    background: radial-gradient(120% 120% at 50% 20%, #2A0A14 0%, var(--noir) 62%);
-    text-align: center;
-    transition: opacity 0.9s ease, visibility 0.9s ease;
-  }
-  .gate[hidden] { display: grid; }          /* keep layout while fading */
-  .gate.is-open { opacity: 0; visibility: hidden; pointer-events: none; }
-  .gate__inner { max-width: 30rem; }
-  .gate__mark { font-family: var(--font-display); font-size: clamp(2.4rem, 8vw, 4rem); line-height: 1; }
-  .gate__rule { width: 46px; height: 1px; background: var(--champagne); margin: 1.6rem auto; opacity: 0.7; }
-  .gate p { color: var(--bone-dim); font-size: 0.95rem; margin: 0 auto 2rem; max-width: 24rem; }
-  .gate__row { display: flex; gap: 0.9rem; justify-content: center; flex-wrap: wrap; }
-  .gate__leave { color: var(--bone-faint); align-self: center; font-size: 0.85rem; letter-spacing: 0.04em; }
-  .gate__leave:hover { color: var(--bone-dim); }
-
-  /* ---------------- Buttons ---------------- */
+  /* ---------- buttons ---------- */
   .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.6rem;
-    font-family: var(--font-sans);
-    font-size: 0.78rem;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    font-weight: 600;
-    padding: 1rem 1.9rem;
-    border: 1px solid var(--champagne);
-    color: var(--bone);
-    background: transparent;
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.45rem;
+    font-family: inherit; font-size: var(--t-sm); font-weight: 500;
+    padding: 0.55rem 0.95rem;
+    border-radius: var(--r);
+    border: 1px solid var(--border-strong);
+    background: var(--surface-2);
+    color: var(--text);
     cursor: pointer;
-    transition: background 0.5s ease, color 0.5s ease, letter-spacing 0.5s ease;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    white-space: nowrap;
   }
-  .btn:hover { background: var(--champagne); color: #1A0509; letter-spacing: 0.26em; }
-  .btn--solid { background: var(--wine); border-color: var(--wine); }
-  .btn--solid:hover { background: var(--champagne); border-color: var(--champagne); }
+  .btn:hover { background: #232329; border-color: #3D3D47; }
+  .btn--primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn--primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+  .btn--ghost { background: transparent; border-color: transparent; color: var(--text-dim); }
+  .btn--ghost:hover { background: var(--surface-2); color: var(--text); border-color: transparent; }
+  .btn--lg { font-size: var(--t-base); padding: 0.7rem 1.25rem; }
 
-  /* ---------------- Nav ---------------- */
-  .nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 40;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1.5rem var(--pad-x);
-    transition: padding 0.5s ease, background 0.5s ease, border-color 0.5s ease;
-    border-bottom: 1px solid transparent;
+  /* ---------- age gate ---------- */
+  .gate {
+    position: fixed; inset: 0; z-index: 100;
+    display: grid; place-items: center; padding: 1.5rem;
+    background: var(--bg);
+    transition: opacity 0.25s ease, visibility 0.25s ease;
   }
-  .nav.is-stuck {
-    padding-block: 0.9rem;
-    background: var(--noir-veil);
-    backdrop-filter: blur(14px);
-    border-bottom-color: var(--hairline);
+  .gate.is-open { opacity: 0; visibility: hidden; pointer-events: none; }
+  .gate__card {
+    max-width: 27rem; width: 100%;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--r); padding: 1.75rem;
   }
-  .nav__mark { font-family: var(--font-display); font-size: 1.5rem; letter-spacing: 0.04em; }
-  .nav__mark span { color: var(--rose); }
-  .nav__links { display: flex; gap: 2.2rem; align-items: center; }
-  .nav__links a {
-    font-size: 0.72rem; letter-spacing: 0.24em; text-transform: uppercase;
-    color: var(--bone-dim); transition: color 0.4s ease;
-  }
-  .nav__links a:hover { color: var(--bone); }
-  .nav__cta { color: var(--champagne) !important; }
-  @media (max-width: 760px) { .nav__links a:not(.nav__cta) { display: none; } }
+  .gate__card h2 { font-size: var(--t-lg); margin-bottom: 0.5rem; }
+  .gate__card p { color: var(--text-dim); font-size: var(--t-sm); margin: 0 0 1.5rem; }
+  .gate__row { display: flex; gap: 0.5rem; }
+  .gate__row .btn { flex: 1; }
 
-  /* ---------------- Hero ---------------- */
-  .hero {
-    position: relative;
-    min-height: 100svh;
-    display: grid;
-    align-items: center;
-    overflow: hidden;
+  /* ---------- header ---------- */
+  header.top {
+    position: sticky; top: 0; z-index: 40;
+    /* near-opaque so scrolling content never ghosts through; blur is a bonus */
+    background: rgba(11,11,14,0.97);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
   }
-  #silk {
-    position: absolute; inset: 0;
-    width: 100%; height: 100%;
-    z-index: 0;
-    display: block;
+  /* keep anchored headings clear of the sticky header */
+  section[id] { scroll-margin-top: 52px; }
+  .top__inner { display: flex; align-items: center; gap: 1.5rem; height: 52px; }
+  .brand { font-size: var(--t-base); font-weight: 600; letter-spacing: -0.02em; }
+  .brand em { font-style: normal; color: var(--text-dim); font-weight: 400; }
+  .top nav { display: flex; gap: 0.25rem; margin-right: auto; }
+  .top nav a {
+    font-size: var(--t-sm); color: var(--text-dim); padding: 0.3rem 0.6rem;
+    border-radius: var(--r-sm); transition: color 0.15s ease, background 0.15s ease;
   }
-  .hero::after {   /* vignette to seat the type */
-    content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
-    background:
-      radial-gradient(90% 70% at 50% 42%, transparent 40%, rgba(10,4,6,0.55) 100%),
-      linear-gradient(to bottom, rgba(10,4,6,0.4), transparent 22%, transparent 68%, var(--noir) 100%);
+  .top nav a:hover { color: var(--text); background: var(--surface-2); }
+  .top__actions { display: flex; align-items: center; gap: 0.5rem; }
+  .cart {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-size: var(--t-sm); color: var(--text-dim);
+    border: 1px solid var(--border); border-radius: var(--r);
+    padding: 0.4rem 0.7rem;
   }
-  .hero__content { position: relative; z-index: 2; text-align: center; padding-block: 8rem 4rem; }
-  .hero__eyebrow { display: inline-block; margin-bottom: 2.2rem; }
-  .hero__title {
-    font-size: clamp(3.6rem, 15vw, 11rem);
-    line-height: 0.9;
-    letter-spacing: 0.005em;
-  }
-  .hero__title .noir { display: block; color: var(--rose); font-style: italic; }
-  .hero__rule { width: 64px; height: 1px; background: var(--champagne); margin: 2.4rem auto; opacity: 0.75; }
-  .hero__thesis {
-    max-width: 34ch; margin: 0 auto 2.8rem;
-    font-size: clamp(1.05rem, 2.4vw, 1.3rem);
-    color: var(--bone-dim);
-    font-style: italic;
-    font-family: var(--font-display);
-    line-height: 1.5;
-  }
-  .hero__scroll {
-    position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
-    z-index: 2; font-size: 0.62rem; letter-spacing: 0.34em; text-transform: uppercase;
-    color: var(--bone-faint); display: flex; flex-direction: column; align-items: center; gap: 0.7rem;
-  }
-  .hero__scroll::after { content: ""; width: 1px; height: 42px; background: linear-gradient(var(--champagne), transparent); animation: drop 2.4s ease-in-out infinite; }
-  @keyframes drop { 0%,100% { opacity: 0.3; transform: scaleY(0.6); transform-origin: top; } 50% { opacity: 1; transform: scaleY(1); } }
-  @media (prefers-reduced-motion: reduce) { .hero__scroll::after { animation: none; } }
+  .cart b { color: var(--text); font-weight: 500; font-variant-numeric: tabular-nums; }
+  @media (max-width: 820px) { .top nav { display: none; } }
 
-  /* ---------------- Reveal on scroll ---------------- */
-  .reveal { opacity: 0; transform: translateY(26px); transition: opacity 1s ease, transform 1s cubic-bezier(0.2,0.7,0.2,1); }
-  .reveal.is-in { opacity: 1; transform: none; }
-  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
+  /* ---------- hero ---------- */
+  .hero { border-bottom: 1px solid var(--border); }
+  .hero__inner { padding-block: clamp(2.5rem, 6vw, 4rem); max-width: 44rem; }
+  .hero h1 { font-size: clamp(var(--t-2xl), 6vw, var(--t-4xl)); margin-bottom: 0.9rem; }
+  .hero p { color: var(--text-dim); font-size: var(--t-lg); margin: 0 0 1.75rem; max-width: 34rem; line-height: 1.45; }
+  .hero__cta { display: flex; gap: 0.6rem; flex-wrap: wrap; }
 
-  /* ---------------- Sections ---------------- */
-  section { position: relative; }
-  .band { padding-block: clamp(5rem, 12vw, 9rem); }
+  .trust { display: flex; gap: 2rem; flex-wrap: wrap; padding-block: 1rem; border-top: 1px solid var(--border); }
+  .trust div { display: flex; align-items: center; gap: 0.5rem; font-size: var(--t-sm); color: var(--text-dim); }
+  .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--ok); flex: none; }
 
-  .manifesto { text-align: center; }
-  .manifesto h2 {
-    font-size: clamp(1.8rem, 5vw, 3.2rem);
-    line-height: 1.18;
-    max-width: 20ch;
-    margin: 1.6rem auto 0;
+  /* ---------- toolbar ---------- */
+  .toolbar {
+    display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;
+    padding-block: 1.25rem;
   }
-  .manifesto h2 em { color: var(--rose); font-style: italic; }
-
-  .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 3.2rem; }
-  .section-head h2 { font-size: clamp(2rem, 5vw, 3.4rem); }
-  .section-head p { color: var(--bone-dim); max-width: 32ch; font-size: 0.95rem; }
-
-  /* Collections grid */
-  .collections { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--hairline); border: 1px solid var(--hairline); }
-  @media (max-width: 900px) { .collections { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 560px) { .collections { grid-template-columns: 1fr; } }
-  .col {
-    position: relative;
-    background: var(--noir);
-    padding: 2.6rem 2rem 2.4rem;
-    min-height: 300px;
-    display: flex; flex-direction: column; justify-content: flex-end;
-    overflow: hidden;
-    transition: background 0.6s ease;
+  .chip {
+    font-size: var(--t-sm); color: var(--text-dim);
+    border: 1px solid var(--border); border-radius: var(--r);
+    padding: 0.35rem 0.7rem; background: transparent; cursor: pointer;
+    font-family: inherit;
+    transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
   }
-  .col::before {  /* ambient glow that warms on hover */
-    content: ""; position: absolute; inset: 0; opacity: 0; transition: opacity 0.7s ease;
-    background: radial-gradient(120% 90% at 30% 0%, rgba(122,19,48,0.55), transparent 70%);
+  .chip:hover { color: var(--text); border-color: var(--border-strong); }
+  .chip[aria-pressed="true"] { color: var(--text); background: var(--accent-quiet); border-color: var(--accent); }
+  .toolbar__count { margin-left: auto; font-size: var(--t-sm); color: var(--text-faint); font-variant-numeric: tabular-nums; }
+
+  /* ---------- product grid ---------- */
+  /* discrete bordered cards, not a background-gap table — so filtering collapses cleanly */
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  @media (max-width: 980px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 720px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 460px) { .grid { grid-template-columns: 1fr; } }
+
+  .card {
+    background: var(--bg); padding: 1rem;
+    border: 1px solid var(--border); border-radius: var(--r);
+    display: flex; flex-direction: column; gap: 0.65rem;
+    transition: background 0.15s ease, border-color 0.15s ease;
   }
-  .col:hover { background: var(--noir-raised); }
-  .col:hover::before { opacity: 1; }
-  .col__no { position: relative; font-size: 0.7rem; letter-spacing: 0.3em; color: var(--champagne); margin-bottom: auto; }
-  .col__name { position: relative; font-family: var(--font-display); font-size: 1.9rem; line-height: 1.1; margin-bottom: 0.6rem; }
-  .col__desc { position: relative; color: var(--bone-dim); font-size: 0.9rem; line-height: 1.55; }
-  .col__link { position: relative; margin-top: 1.4rem; font-size: 0.68rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--bone-faint); display: inline-flex; gap: 0.5rem; transition: color 0.4s ease, gap 0.4s ease; }
-  .col:hover .col__link { color: var(--rose); gap: 0.9rem; }
-
-  /* Promise */
-  .promise { background: linear-gradient(180deg, var(--noir) 0%, #190711 100%); }
-  .promise__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; margin-top: 3rem; }
-  @media (max-width: 780px) { .promise__grid { grid-template-columns: 1fr; gap: 2.8rem; } }
-  .promise__item { border-top: 1px solid var(--hairline); padding-top: 1.6rem; }
-  .promise__item h3 { font-size: 1.5rem; margin-bottom: 0.7rem; }
-  .promise__item p { color: var(--bone-dim); font-size: 0.92rem; }
-
-  /* Editorial quote */
-  .quote { text-align: center; }
-  .quote blockquote {
-    margin: 0 auto; max-width: 24ch;
-    font-family: var(--font-display); font-style: italic;
-    font-size: clamp(2rem, 6vw, 4rem); line-height: 1.14; color: var(--bone);
+  .card:hover { background: var(--surface); border-color: var(--border-strong); }
+  .card__media {
+    aspect-ratio: 4 / 3; border-radius: var(--r-sm);
+    background: linear-gradient(160deg, var(--surface-2), #101014);
+    border: 1px solid var(--border);
+    display: grid; place-items: center;
+    font-size: var(--t-xs); color: var(--text-faint); letter-spacing: 0.02em;
   }
-  .quote cite { display: block; margin-top: 2rem; font-family: var(--font-sans); font-style: normal; font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--champagne); }
-
-  /* Newsletter */
-  .circle { text-align: center; }
-  .circle h2 { font-size: clamp(2rem, 5.5vw, 3.6rem); margin-bottom: 1rem; }
-  .circle p { color: var(--bone-dim); max-width: 40ch; margin: 0 auto 2.4rem; }
-  .form { display: flex; gap: 0.75rem; max-width: 30rem; margin: 0 auto; }
-  @media (max-width: 480px) { .form { flex-direction: column; } }
-  .form input {
-    flex: 1; background: transparent; border: 1px solid var(--hairline); color: var(--bone);
-    padding: 1rem 1.2rem; font-family: var(--font-sans); font-size: 0.9rem; letter-spacing: 0.04em;
-    transition: border-color 0.4s ease;
+  .card__cat { font-size: var(--t-xs); color: var(--text-faint); }
+  .card__name { font-size: var(--t-sm); font-weight: 500; letter-spacing: -0.006em; }
+  .card__meta { display: flex; align-items: baseline; justify-content: space-between; gap: 0.5rem; margin-top: auto; }
+  .card__price { font-size: var(--t-sm); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .card__mat { font-size: var(--t-xs); color: var(--text-dim); }
+  .card .btn { width: 100%; }
+  .tag {
+    display: inline-block; font-size: 11px; font-weight: 500;
+    padding: 0.1rem 0.35rem; border-radius: var(--r-sm);
+    background: var(--accent-quiet); color: #A99BEA; border: 1px solid rgba(110,86,207,0.3);
   }
-  .form input::placeholder { color: var(--bone-faint); letter-spacing: 0.1em; text-transform: uppercase; font-size: 0.72rem; }
-  .form input:focus { outline: none; border-color: var(--champagne); }
-  .form__note { margin-top: 1.4rem; font-size: 0.72rem; color: var(--bone-faint); letter-spacing: 0.06em; }
-  .form.is-done .form__fields { display: none; }
-  .form__success { display: none; color: var(--rose); font-family: var(--font-display); font-style: italic; font-size: 1.3rem; }
 
-  /* ---------------- Footer ---------------- */
-  footer { border-top: 1px solid var(--hairline); padding-block: 4rem 3rem; }
-  .foot__top { display: flex; justify-content: space-between; gap: 2rem; flex-wrap: wrap; margin-bottom: 3rem; }
-  .foot__mark { font-family: var(--font-display); font-size: 2rem; }
-  .foot__mark span { color: var(--rose); }
-  .foot__cols { display: flex; gap: 4rem; flex-wrap: wrap; }
-  .foot__col h4 { font-size: 0.68rem; letter-spacing: 0.26em; text-transform: uppercase; color: var(--champagne); margin: 0 0 1rem; font-family: var(--font-sans); font-weight: 600; }
-  .foot__col a { display: block; color: var(--bone-dim); font-size: 0.88rem; margin-bottom: 0.6rem; transition: color 0.4s ease; }
-  .foot__col a:hover { color: var(--bone); }
-  .foot__bottom { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; align-items: center; font-size: 0.75rem; color: var(--bone-faint); letter-spacing: 0.04em; }
-  .foot__badge { border: 1px solid var(--hairline); padding: 0.35rem 0.7rem; letter-spacing: 0.2em; font-weight: 600; color: var(--bone-dim); }
+  /* ---------- sections ---------- */
+  .section { padding-block: clamp(3rem, 7vw, 4.5rem); border-top: 1px solid var(--border); }
+  .section__head { margin-bottom: 1.75rem; }
+  .section__head h2 { font-size: var(--t-xl); margin-bottom: 0.35rem; }
+  .section__head p { color: var(--text-dim); font-size: var(--t-sm); margin: 0; max-width: 42rem; }
+
+  .specs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+  @media (max-width: 780px) { .specs { grid-template-columns: 1fr; } }
+  .spec { background: var(--bg); padding: 1.25rem; }
+  .spec h3 { font-size: var(--t-sm); margin-bottom: 0.35rem; }
+  .spec p { color: var(--text-dim); font-size: var(--t-sm); margin: 0; }
+  .spec__k { font-size: var(--t-xs); color: var(--text-faint); font-variant-numeric: tabular-nums; display: block; margin-bottom: 0.6rem; }
+
+  /* ---------- newsletter ---------- */
+  .join { display: flex; align-items: flex-start; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
+  .join__copy { max-width: 30rem; }
+  .join__copy h2 { font-size: var(--t-xl); margin-bottom: 0.35rem; }
+  .join__copy p { color: var(--text-dim); font-size: var(--t-sm); margin: 0; }
+  form.join__form { display: flex; gap: 0.5rem; flex: 1; min-width: 18rem; max-width: 26rem; }
+  form.join__form input {
+    flex: 1; min-width: 0;
+    background: var(--surface); border: 1px solid var(--border); color: var(--text);
+    border-radius: var(--r); padding: 0.55rem 0.75rem;
+    font-family: inherit; font-size: var(--t-sm);
+    transition: border-color 0.15s ease;
+  }
+  form.join__form input::placeholder { color: var(--text-faint); }
+  form.join__form input:focus { outline: none; border-color: var(--accent); }
+  .join.is-done .join__form { display: none; }
+  .join__done { display: none; font-size: var(--t-sm); color: var(--ok); }
+  .join.is-done .join__done { display: block; }
+
+  /* ---------- footer ---------- */
+  footer.foot { border-top: 1px solid var(--border); padding-block: 2.5rem 2rem; }
+  .foot__grid { display: flex; gap: 3rem; flex-wrap: wrap; margin-bottom: 2rem; }
+  .foot__brand { margin-right: auto; max-width: 18rem; }
+  .foot__brand p { color: var(--text-faint); font-size: var(--t-sm); margin: 0.4rem 0 0; }
+  .foot__col h4 { font-size: var(--t-xs); font-weight: 500; color: var(--text-dim); margin: 0 0 0.7rem; }
+  .foot__col a { display: block; font-size: var(--t-sm); color: var(--text-faint); margin-bottom: 0.4rem; transition: color 0.15s ease; }
+  .foot__col a:hover { color: var(--text); }
+  .foot__bar { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; align-items: center; padding-top: 1.25rem; border-top: 1px solid var(--border); font-size: var(--t-xs); color: var(--text-faint); }
+  .badge { border: 1px solid var(--border); border-radius: var(--r-sm); padding: 0.15rem 0.4rem; }
 </style>
 </head>
 <body>
 
-  <!-- ================= AGE GATE ================= -->
-  <div class="gate" id="gate" role="dialog" aria-modal="true" aria-label="Age verification">
-    <div class="gate__inner">
-      <div class="gate__mark">Rose <span style="color:var(--rose)">Noir</span></div>
-      <div class="gate__rule"></div>
-      <p>This is a house for adults. By entering, you confirm that you are <strong>18 years or older</strong> and welcome material of a sensual nature.</p>
-      <div class="gate__row">
-        <button class="btn btn--solid" id="gateEnter">Enter the house</button>
-        <a class="gate__leave" href="https://www.google.com">I&rsquo;m not 18</a>
+<!-- age gate -->
+<div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
+  <div class="gate__card">
+    <h2 id="gateTitle">Confirm your age</h2>
+    <p>Rose Noir sells products intended for adults. Confirm you are 18 or older to continue.</p>
+    <div class="gate__row">
+      <button class="btn btn--primary" id="gateEnter">I am 18 or older</button>
+      <a class="btn" href="https://www.google.com">Leave</a>
+    </div>
+  </div>
+</div>
+
+<header class="top">
+  <div class="shell top__inner">
+    <a class="brand" href="#">Rose <em>Noir</em></a>
+    <nav>
+      <a href="#shop">Shop</a>
+      <a href="#discretion">Discretion</a>
+      <a href="#materials">Materials</a>
+      <a href="#support">Support</a>
+    </nav>
+    <div class="top__actions">
+      <span class="cart">Cart <b>0</b></span>
+      <button class="btn btn--primary">Sign in</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="shell">
+    <div class="hero__inner">
+      <h1>Premium intimacy, discreetly delivered.</h1>
+      <p>A short, vetted catalogue. Body-safe materials only, unbranded packaging, and 24&ndash;48h delivery across Poland.</p>
+      <div class="hero__cta">
+        <a class="btn btn--primary btn--lg" href="#shop">Browse the catalogue</a>
+        <a class="btn btn--lg" href="#discretion">How we ship</a>
+      </div>
+    </div>
+    <div class="trust">
+      <div><span class="dot"></span> Plain, unbranded packaging</div>
+      <div><span class="dot"></span> Neutral billing descriptor</div>
+      <div><span class="dot"></span> 24&ndash;48h delivery in Poland</div>
+      <div><span class="dot"></span> Body-safe materials, documented</div>
+    </div>
+  </div>
+</section>
+
+<section id="shop">
+  <div class="shell">
+    <div class="toolbar" role="group" aria-label="Filter catalogue">
+      <button class="chip" aria-pressed="true" data-filter="all">All</button>
+      <button class="chip" aria-pressed="false" data-filter="toys">Toys</button>
+      <button class="chip" aria-pressed="false" data-filter="lingerie">Lingerie</button>
+      <button class="chip" aria-pressed="false" data-filter="restraints">Restraints</button>
+      <button class="chip" aria-pressed="false" data-filter="care">Oils &amp; care</button>
+      <span class="toolbar__count" id="count">8 products</span>
+    </div>
+
+    <div class="grid" id="grid">
+      <article class="card" data-cat="toys">
+        <div class="card__media">Product image</div>
+        <span class="card__cat">Toys</span>
+        <span class="card__name">Onyx Vibrating Wand <span class="tag">New</span></span>
+        <div class="card__meta"><span class="card__price">489 zł</span><span class="card__mat">Medical silicone</span></div>
+        <button class="btn">Add to cart</button>
+      </article>
+      <article class="card" data-cat="toys">
+        <div class="card__media">Product image</div>
+        <span class="card__cat">Toys</span>
+        <span class="card__name">Glass Curve No. 2</span>
+        <div class="card__meta"><span class="card__price">239 zł</span><span class="card__mat">Borosilicate glass</span></div>
+        <button class="btn">Add to cart</button>
+      </article>
+      <article class="card" data-cat="toys">
+        <div class="card__media">Product image</div>
+        <span class="card__cat">Toys</span>
+        <span class="card__name">Dual Ring, Rechargeable</span>
+        <div class="card__meta"><span class="card__price">329 zł</span><span class="card__mat">Medical silicone</span></div>
+        <button class="btn">Add to cart</button>
+      </article>
+      <article class="card" data-cat="lingerie">
+        <div class="card__media">Product image</div>
+        <span class="card__cat">Lingerie</span>
+        <span class="card__name">Silk Slip, Ink</span>
+        <div class="card__meta"><span class="card__price">399 zł</span><span class="card__mat">19mm mulberry silk</span></div>
+        <button class="btn">Add to cart</button>
+      </article>
+      <article class="card" data-cat="lingerie">
+        <div class="card__media">Product image</div>
+        <span class="card__cat">Lingerie</span>
+        <span class="card__name">Lace Harness Set</span>
+        <div class="card__meta"><span class="card__price">279 zł</span><span class="card__mat">Leavers lace</span></div>
+        <button class="btn">Add to cart</button>
+      </article>
+      <article class="card" data-cat="restraints">
+        <div class="card__media">Product image</div>
+        <span class="card__cat">Restraints</span>
+        <span class="card__name">Leather Cuffs, Lined <span class="tag">Top rated</span></span>
+        <div class="card__meta"><span class="card__price">459 zł</span><span class="card__mat">Vegetable-tanned leather</span></div>
+        <button class="btn">Add to cart</button>
+      </article>
+      <article class="card" data-cat="restraints">
+        <div class="card__media">Product image</div>
+        <span class="card__cat">Restraints</span>
+        <span class="card__name">Silk Tie Set of Two</span>
+        <div class="card__meta"><span class="card__price">189 zł</span><span class="card__mat">Sandwashed silk</span></div>
+        <button class="btn">Add to cart</button>
+      </article>
+      <article class="card" data-cat="care">
+        <div class="card__media">Product image</div>
+        <span class="card__cat">Oils &amp; care</span>
+        <span class="card__name">Massage Oil, Neroli</span>
+        <div class="card__meta"><span class="card__price">129 zł</span><span class="card__mat">Jojoba base</span></div>
+        <button class="btn">Add to cart</button>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="discretion">
+  <div class="shell">
+    <div class="section__head">
+      <h2>How we ship</h2>
+      <p>The details that matter most are the ones nobody else sees.</p>
+    </div>
+    <div class="specs">
+      <div class="spec">
+        <span class="spec__k">01 &middot; Packaging</span>
+        <h3>Plain and unbranded</h3>
+        <p>Grey outer box. No logo, no product name, no indication of contents on any label.</p>
+      </div>
+      <div class="spec">
+        <span class="spec__k">02 &middot; Billing</span>
+        <h3>Neutral descriptor</h3>
+        <p>Your statement shows a neutral trading name, never the shop name.</p>
+      </div>
+      <div class="spec">
+        <span class="spec__k">03 &middot; Delivery</span>
+        <h3>24&ndash;48h, unmarked</h3>
+        <p>Courier or parcel locker across Poland. Warsaw same-day on orders before 13:00.</p>
       </div>
     </div>
   </div>
+</section>
 
-  <!-- ================= NAV ================= -->
-  <nav class="nav" id="nav">
-    <a class="nav__mark" href="#top">Rose <span>Noir</span></a>
-    <div class="nav__links">
-      <a href="#collections">Collections</a>
-      <a href="#discretion">Discretion</a>
-      <a href="#house">The House</a>
-      <a class="nav__cta" href="#circle">Inner Circle</a>
+<section class="section" id="materials">
+  <div class="shell">
+    <div class="section__head">
+      <h2>Materials, documented</h2>
+      <p>Every item lists what it is actually made of. If a material isn't body-safe, we don't stock it.</p>
     </div>
-  </nav>
-
-  <span id="top"></span>
-
-  <!-- ================= HERO ================= -->
-  <header class="hero">
-    <canvas id="silk" aria-hidden="true"></canvas>
-    <div class="hero__content shell">
-      <span class="eyebrow hero__eyebrow">Warsaw &middot; Est. MMXXV</span>
-      <h1 class="hero__title">Rose<span class="noir">Noir</span></h1>
-      <div class="hero__rule"></div>
-      <p class="hero__thesis">Desire deserves better than a plastic aisle. A boudoir house of silk, restraint, and quiet indulgence.</p>
-      <a class="btn" href="#collections">Explore the collections</a>
-    </div>
-    <div class="hero__scroll">Scroll</div>
-  </header>
-
-  <!-- ================= MANIFESTO ================= -->
-  <section class="band manifesto reveal">
-    <div class="shell">
-      <span class="eyebrow">The premise</span>
-      <h2>Pleasure, treated as a <em>craft</em> — not a punchline.</h2>
-    </div>
-  </section>
-
-  <!-- ================= COLLECTIONS ================= -->
-  <section class="band" id="collections">
-    <div class="shell">
-      <div class="section-head reveal">
-        <h2>The Collections</h2>
-        <p>Six worlds, each vetted for material, feel, and finish. Nothing loud. Everything considered.</p>
+    <div class="specs">
+      <div class="spec">
+        <span class="spec__k">Silicone</span>
+        <h3>Medical grade only</h3>
+        <p>Non-porous and fully sterilisable. No PVC, no phthalates, no "jelly" blends.</p>
       </div>
-      <div class="collections reveal">
-        <article class="col">
-          <span class="col__no">I</span>
-          <h3 class="col__name">Le Boudoir</h3>
-          <p class="col__desc">Silk, lace, and the slow art of undress.</p>
-          <span class="col__link">Discover &rarr;</span>
-        </article>
-        <article class="col">
-          <span class="col__no">II</span>
-          <h3 class="col__name">Objets du D&eacute;sir</h3>
-          <p class="col__desc">Refined instruments of pleasure, in glass, gold, and body-safe silicone.</p>
-          <span class="col__link">Discover &rarr;</span>
-        </article>
-        <article class="col">
-          <span class="col__no">III</span>
-          <h3 class="col__name">Cuir &amp; Soie</h3>
-          <p class="col__desc">Leather and restraint, with softness kept close at hand.</p>
-          <span class="col__link">Discover &rarr;</span>
-        </article>
-        <article class="col">
-          <span class="col__no">IV</span>
-          <h3 class="col__name">&Eacute;lixirs</h3>
-          <p class="col__desc">Oils, candles, and scent — for the skin, and the room.</p>
-          <span class="col__link">Discover &rarr;</span>
-        </article>
-        <article class="col">
-          <span class="col__no">V</span>
-          <h3 class="col__name">Pour Deux</h3>
-          <p class="col__desc">Curated for two. An evening, rather than an object.</p>
-          <span class="col__link">Discover &rarr;</span>
-        </article>
-        <article class="col">
-          <span class="col__no">VI</span>
-          <h3 class="col__name">Le Coffret Myst&egrave;re</h3>
-          <p class="col__desc">A monthly coffret, chosen for you. Unmarked, always.</p>
-          <span class="col__link">Subscribe &rarr;</span>
-        </article>
+      <div class="spec">
+        <span class="spec__k">Glass</span>
+        <h3>Borosilicate</h3>
+        <p>Annealed, seamless, and thermal-shock rated. Inspected individually before dispatch.</p>
+      </div>
+      <div class="spec">
+        <span class="spec__k">Textiles</span>
+        <h3>Natural fibres</h3>
+        <p>Mulberry silk and Leavers lace from European mills, with supplier certificates on file.</p>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ================= DISCRETION ================= -->
-  <section class="band promise" id="discretion">
-    <div class="shell">
-      <div class="section-head reveal">
-        <h2>Discretion is the <em style="color:var(--rose);font-style:italic">luxury</em>.</h2>
-        <p>The most important thing we sell, you will never see on the box.</p>
+<section class="section" id="support">
+  <div class="shell">
+    <div class="join" id="join">
+      <div class="join__copy">
+        <h2>New arrivals, occasionally</h2>
+        <p>Restocks and new pieces. No daily mail, no third-party sharing, one-click unsubscribe.</p>
       </div>
-      <div class="promise__grid reveal">
-        <div class="promise__item">
-          <h3>Absolute discretion</h3>
-          <p>Plain, unbranded packaging. No logos, no hints, no clue to the contents. Ever.</p>
-        </div>
-        <div class="promise__item">
-          <h3>Delivered in silence</h3>
-          <p>Neutral billing descriptor and an unmarked courier. Warsaw same-day; Poland in 24&ndash;48h.</p>
-        </div>
-        <div class="promise__item">
-          <h3>Curated, not crowded</h3>
-          <p>Every piece is vetted for quality and body-safe materials. A short list, not an endless shelf.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= QUOTE / HOUSE ================= -->
-  <section class="band quote reveal" id="house">
-    <div class="shell">
-      <blockquote>&ldquo;Sensuality, given the room to be beautiful.&rdquo;</blockquote>
-      <cite>&mdash; The Rose Noir House</cite>
-    </div>
-  </section>
-
-  <!-- ================= INNER CIRCLE ================= -->
-  <section class="band circle reveal" id="circle">
-    <div class="shell">
-      <span class="eyebrow">By invitation</span>
-      <h2>The Inner Circle</h2>
-      <p>First access to new arrivals, private sales, and nothing you didn&rsquo;t ask for. Unsubscribe in one tap.</p>
-      <form class="form" id="circleForm" name="inner-circle" method="POST" data-netlify="true" netlify-honeypot="bot-field">
-        <input type="hidden" name="form-name" value="inner-circle">
-        <p hidden><label>Leave blank <input name="bot-field"></label></p>
-        <div class="form__fields" style="display:flex;gap:0.75rem;flex:1;width:100%">
-          <input type="email" name="email" placeholder="Your email" required aria-label="Your email">
-          <button class="btn btn--solid" type="submit">Enter</button>
-        </div>
-        <span class="form__success" id="formSuccess">Welcome to the Inner Circle.</span>
+      <form class="join__form" name="newsletter" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="newsletter">
+        <p hidden><label>Skip <input name="bot-field"></label></p>
+        <input type="email" name="email" placeholder="you@email.com" required aria-label="Email address">
+        <button class="btn btn--primary" type="submit">Subscribe</button>
       </form>
-      <p class="form__note">18+ only. We keep your address to ourselves — see our Privacy note below.</p>
+      <p class="join__done">Subscribed. Check your inbox to confirm.</p>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ================= FOOTER ================= -->
-  <footer>
-    <div class="shell">
-      <div class="foot__top">
-        <div>
-          <div class="foot__mark">Rose <span>Noir</span></div>
-          <p style="color:var(--bone-faint);max-width:26ch;margin:0.8rem 0 0;font-size:0.85rem">A premium boudoir house. Warsaw, Poland.</p>
-        </div>
-        <div class="foot__cols">
-          <div class="foot__col">
-            <h4>Shop</h4>
-            <a href="#collections">Le Boudoir</a>
-            <a href="#collections">Objets du D&eacute;sir</a>
-            <a href="#collections">Cuir &amp; Soie</a>
-            <a href="#collections">&Eacute;lixirs</a>
-          </div>
-          <div class="foot__col">
-            <h4>The House</h4>
-            <a href="#discretion">Discretion</a>
-            <a href="#house">Our promise</a>
-            <a href="#circle">Inner Circle</a>
-            <a href="mailto:hello@rosenoir.pl">Contact</a>
-          </div>
-          <div class="foot__col">
-            <h4>Legal</h4>
-            <a href="#">Terms of Sale</a>
-            <a href="#">Privacy</a>
-            <a href="#">Shipping &amp; Returns</a>
-            <a href="#">18+ Policy</a>
-          </div>
-        </div>
+<footer class="foot">
+  <div class="shell">
+    <div class="foot__grid">
+      <div class="foot__brand">
+        <span class="brand">Rose <em>Noir</em></span>
+        <p>A curated premium sex shop. Warsaw, Poland.</p>
       </div>
-      <div class="foot__bottom">
-        <span>&copy; <span id="year">2025</span> Rose Noir. All rights reserved.</span>
-        <span class="foot__badge">18+ ONLY</span>
+      <div class="foot__col">
+        <h4>Shop</h4>
+        <a href="#shop">Toys</a>
+        <a href="#shop">Lingerie</a>
+        <a href="#shop">Restraints</a>
+        <a href="#shop">Oils &amp; care</a>
+      </div>
+      <div class="foot__col">
+        <h4>Company</h4>
+        <a href="#discretion">How we ship</a>
+        <a href="#materials">Materials</a>
+        <a href="mailto:hello@rosenoir.pl">Contact</a>
+      </div>
+      <div class="foot__col">
+        <h4>Legal</h4>
+        <a href="#">Terms of sale</a>
+        <a href="#">Privacy</a>
+        <a href="#">Returns</a>
+        <a href="#">18+ policy</a>
       </div>
     </div>
-  </footer>
+    <div class="foot__bar">
+      <span>&copy; <span id="year">2026</span> Rose Noir</span>
+      <span class="badge">18+</span>
+    </div>
+  </div>
+</footer>
 
 <script>
 (function () {
   "use strict";
-  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  /* ---------- Age gate ---------- */
+  /* age gate — remembered for the session */
   var gate = document.getElementById("gate");
-  var passed = false;
-  try { passed = sessionStorage.getItem("rn_age_ok") === "1"; } catch (e) {}
-  if (passed) {
-    gate.classList.add("is-open");
-    document.body.style.overflow = "";
-  } else {
-    document.body.style.overflow = "hidden";
-  }
+  var ok = false;
+  try { ok = sessionStorage.getItem("rn_age") === "1"; } catch (e) {}
+  if (ok) { gate.classList.add("is-open"); } else { document.body.style.overflow = "hidden"; }
   document.getElementById("gateEnter").addEventListener("click", function () {
-    try { sessionStorage.setItem("rn_age_ok", "1"); } catch (e) {}
+    try { sessionStorage.setItem("rn_age", "1"); } catch (e) {}
     gate.classList.add("is-open");
     document.body.style.overflow = "";
   });
 
-  /* ---------- Year ---------- */
   document.getElementById("year").textContent = new Date().getFullYear();
 
-  /* ---------- Nav shrink ---------- */
-  var nav = document.getElementById("nav");
-  function onScroll() { nav.classList.toggle("is-stuck", window.scrollY > 40); }
-  onScroll();
-  window.addEventListener("scroll", onScroll, { passive: true });
-
-  /* ---------- Scroll reveals ---------- */
-  var reveals = document.querySelectorAll(".reveal");
-  if ("IntersectionObserver" in window && !reduced) {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (en.isIntersecting) { en.target.classList.add("is-in"); io.unobserve(en.target); }
+  /* catalogue filter */
+  var chips = document.querySelectorAll(".chip");
+  var cards = document.querySelectorAll("#grid .card");
+  var count = document.getElementById("count");
+  chips.forEach(function (chip) {
+    chip.addEventListener("click", function () {
+      chips.forEach(function (c) { c.setAttribute("aria-pressed", "false"); });
+      chip.setAttribute("aria-pressed", "true");
+      var f = chip.dataset.filter;
+      var shown = 0;
+      cards.forEach(function (card) {
+        var match = f === "all" || card.dataset.cat === f;
+        card.style.display = match ? "" : "none";
+        if (match) shown++;
       });
-    }, { threshold: 0.16 });
-    reveals.forEach(function (el) { io.observe(el); });
-  } else {
-    reveals.forEach(function (el) { el.classList.add("is-in"); });
-  }
-
-  /* ---------- Newsletter (client-side confirm; Netlify captures on submit) ---------- */
-  var form = document.getElementById("circleForm");
-  form.addEventListener("submit", function (e) {
-    var host = location.hostname;
-    var onNetlify = /netlify\.app$/.test(host);
-    if (!onNetlify) {
-      // No form backend on this host — confirm client-side instead of erroring.
-      e.preventDefault();
-    }
-    form.classList.add("is-done");
-    document.getElementById("formSuccess").style.display = "block";
+      count.textContent = shown + (shown === 1 ? " product" : " products");
+    });
   });
 
-  /* ---------- Ambient "black silk" hero ---------- */
-  var canvas = document.getElementById("silk");
-  var ctx = canvas.getContext("2d");
-  var W, H, dpr;
-  var blobs = [
-    { hue: "#7A1330", x: 0.32, y: 0.40, r: 0.55, ax: 0.06, ay: 0.05, sx: 0.00021, sy: 0.00017, p: 0 },
-    { hue: "#3D0A18", x: 0.66, y: 0.55, r: 0.62, ax: 0.08, ay: 0.06, sx: 0.00015, sy: 0.00023, p: 2 },
-    { hue: "#B15C6E", x: 0.52, y: 0.30, r: 0.34, ax: 0.05, ay: 0.07, sx: 0.00027, sy: 0.00013, p: 4 },
-    { hue: "#2A0712", x: 0.44, y: 0.70, r: 0.5,  ax: 0.07, ay: 0.05, sx: 0.00019, sy: 0.00021, p: 1 }
-  ];
-
-  function resize() {
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    var rect = canvas.getBoundingClientRect();
-    W = rect.width; H = rect.height;
-    canvas.width = Math.floor(W * dpr);
-    canvas.height = Math.floor(H * dpr);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  }
-  resize();
-  window.addEventListener("resize", resize);
-
-  function draw(t) {
-    ctx.globalCompositeOperation = "source-over";
-    ctx.fillStyle = "#140609";
-    ctx.fillRect(0, 0, W, H);
-    ctx.globalCompositeOperation = "lighter";
-    for (var i = 0; i < blobs.length; i++) {
-      var b = blobs[i];
-      var cx = (b.x + Math.sin(t * b.sx + b.p) * b.ax) * W;
-      var cy = (b.y + Math.cos(t * b.sy + b.p) * b.ay) * H;
-      var rad = b.r * Math.min(W, H);
-      var g = ctx.createRadialGradient(cx, cy, 0, cx, cy, rad);
-      g.addColorStop(0, b.hue);
-      g.addColorStop(1, "rgba(20,6,9,0)");
-      ctx.globalAlpha = 0.42;
-      ctx.fillStyle = g;
-      ctx.beginPath();
-      ctx.arc(cx, cy, rad, 0, Math.PI * 2);
-      ctx.fill();
-    }
-    ctx.globalAlpha = 1;
-  }
-
-  if (reduced) {
-    draw(0);
-  } else {
-    var start = performance.now();
-    (function loop(now) {
-      draw(now - start);
-      requestAnimationFrame(loop);
-    })(start);
-  }
+  /* newsletter */
+  var join = document.getElementById("join");
+  join.querySelector("form").addEventListener("submit", function (e) {
+    if (!/netlify\.app$/.test(location.hostname)) { e.preventDefault(); }
+    join.classList.add("is-done");
+  });
 })();
 </script>
 </body>
