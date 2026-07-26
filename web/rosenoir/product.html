@@ -201,7 +201,7 @@
 
     '<div class="detail">' +
       '<div class="gallery">' +
-        '<div class="gallery__main">Product image</div>' +
+        '<div class="gallery__main">' + mediaInner(product) + '</div>' +
         '<div class="gallery__row">' +
           '<div class="gallery__thumb">Detail</div>' +
           '<div class="gallery__thumb">In hand</div>' +
@@ -244,7 +244,7 @@
       '<div class="rel">' +
         related.map(function (p) {
           return '<article class="card">' +
-            '<a class="card__media" href="product.html?id=' + encodeURIComponent(p.id) + '" aria-label="' + esc(p.name) + '">Product image</a>' +
+            '<a class="card__media" href="product.html?id=' + encodeURIComponent(p.id) + '" aria-label="' + esc(p.name) + '">' + mediaInner(p) + '</a>' +
             '<span class="card__cat">' + esc(catLabel(p.cat)) + '</span>' +
             '<a class="card__name" href="product.html?id=' + encodeURIComponent(p.id) + '">' + esc(p.name) + '</a>' +
             '<div class="card__meta"><span class="card__price">' + esc(zl(p.price)) + '</span></div>' +

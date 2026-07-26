@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wholesaler feed → catalog.js</title>
+<meta name="theme-color" content="#0B0B0E">
+<link rel="stylesheet" href="../style.css">
+<style>
+  .wrap { max-width: 64rem; margin: 0 auto; padding: 2rem var(--pad) 5rem; }
+  h1 { font-size: var(--t-2xl); margin-bottom: 0.3rem; }
+  .sub { color: var(--text-dim); font-size: var(--t-sm); margin: 0 0 1.75rem; }
+  h2 { font-size: var(--t-lg); margin: 2rem 0 0.75rem; }
+  p.hint { color: var(--text-dim); font-size: var(--t-sm); margin: 0 0 1rem; }
+
+  input[type=file], input[type=text], input[type=number], select, textarea {
+    background: var(--surface); border: 1px solid var(--border); color: var(--text);
+    border-radius: var(--r); padding: 0.55rem 0.7rem;
+    font-family: inherit; font-size: var(--t-sm); width: 100%; min-width: 0;
+  }
+  textarea { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; line-height: 1.5; }
+  select:focus, input:focus, textarea:focus { outline: none; border-color: var(--accent); }
+
+  .map { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 0.75rem; margin-bottom: 1rem; }
+  .map label { display: block; font-size: var(--t-xs); color: var(--text-faint); margin-bottom: 0.25rem; }
+  .req { color: var(--accent-text); }
+
+  .actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 1rem 0; }
+  .stat { font-size: var(--t-sm); color: var(--text-dim); }
+  .tablewrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--r); margin-bottom: 1rem; }
+  table { width: 100%; border-collapse: collapse; font-size: var(--t-sm); min-width: 46rem; }
+  th, td { text-align: left; padding: 0.5rem 0.7rem; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  th { font-size: var(--t-xs); color: var(--text-faint); font-weight: 500; }
+  tr:last-child td { border-bottom: 0; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .bad { color: #E06C6C; }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="shell top__inner">
+    <a class="brand" href="../index.html">Rose <em>Noir</em></a>
+    <nav>
+      <a href="ewidencja.html">Ewidencja</a>
+      <a href="import-feed.html" aria-current="page">Import feed</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <h1>Wholesaler feed → catalog.js</h1>
+  <p class="sub">Converts a supplier product feed (CSV or XML) into the <code>CATALOG</code> array this shop uses.</p>
+
+  <div class="note">
+    <strong>Built blind, on purpose.</strong> Erotizo's actual feed format was not reachable when this
+    was written, so nothing here assumes their column names. Load their file, map the columns once,
+    and the mapping is remembered. If their feed is an API rather than a file, send me the endpoint
+    docs and this becomes a fetch instead of an upload.
+  </div>
+
+  <h2>1. Load the feed</h2>
+  <p class="hint">CSV (any delimiter) or XML. Everything runs in your browser — the file is never uploaded anywhere.</p>
+  <input type="file" id="file" accept=".csv,.tsv,.txt,.xml">
+  <div class="actions">
+    <span class="stat" id="loadStat">No file loaded.</span>
+  </div>
+
+  <h2>2. Map the columns</h2>
+  <p class="hint">Fields marked <span class="req">*</span> are required. Leave the rest empty if the feed doesn't carry them.</p>
+  <div class="map" id="map"></div>
+
+  <h2>3. Set your margin</h2>
+  <p class="hint">Retail price = wholesale price &times; multiplier, then rounded. Check the result against
+    the wholesaler's own RRP if their feed provides one — and remember you cannot deduct VAT while
+    you are VAT-exempt, so the wholesale figure you see is your real cost.</p>
+  <div class="map">
+    <div>
+      <label for="mult">Multiplier</label>
+      <input type="number" id="mult" step="0.05" min="1" value="2.2">
+    </div>
+    <div>
+      <label for="round">Round to nearest</label>
+      <select id="round">
+        <option value="1">1 zł</option>
+        <option value="10" selected>10 zł</option>
+        <option value="0">no rounding</option>
+      </select>
+    </div>
+    <div>
+      <label for="minus">Then subtract</label>
+      <select id="minus">
+        <option value="0">nothing</option>
+        <option value="1" selected>1 zł (…9 pricing)</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn btn--primary" id="convert" type="button">Convert</button>
+    <span class="stat" id="convStat"></span>
+  </div>
+
+  <h2>4. Preview</h2>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>id</th><th>name</th><th>cat</th><th class="num">wholesale</th><th class="num">retail</th><th>material</th><th>image</th></tr></thead>
+      <tbody id="preview"><tr><td colspan="7" style="color:var(--text-dim)">Nothing converted yet.</td></tr></tbody>
+    </table>
+  </div>
+
+  <h2>5. Output</h2>
+  <p class="hint">Paste this over the <code>CATALOG</code> array in <code>catalog.js</code>. Keep a copy of the old one until you've checked the shop still renders.</p>
+  <textarea id="out" rows="14" spellcheck="false" placeholder="// converted output appears here"></textarea>
+  <div class="actions">
+    <button class="btn" id="copy" type="button">Copy</button>
+    <button class="btn" id="dl" type="button">Download catalog-products.js</button>
+  </div>
+
+  <div class="note">
+    <strong>Before you publish an imported catalogue.</strong> Wholesaler descriptions are written for
+    resellers and often read badly — rewrite them in the shop's own voice. Check that every image URL
+    is one you are licensed to hotlink or, better, download and self-host them. And confirm the
+    supplier's stock field actually means what you think before you sell something you can't ship.
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var FIELDS = [
+    { k: 'id',       label: 'id / SKU',              req: true },
+    { k: 'name',     label: 'name',                  req: true },
+    { k: 'price',    label: 'wholesale price',       req: true },
+    { k: 'cat',      label: 'category',              req: false },
+    { k: 'material', label: 'material',              req: false },
+    { k: 'blurb',    label: 'description',           req: false },
+    { k: 'image',    label: 'image URL',             req: false },
+    { k: 'stock',    label: 'stock / availability',  req: false }
+  ];
+
+  var LS_MAP = 'rn_feedmap_v1';
+  var headers = [];
+  var records = [];
+
+  var mapEl = document.getElementById('map');
+
+  function savedMap() {
+    try { return JSON.parse(localStorage.getItem(LS_MAP) || '{}') || {}; } catch (e) { return {}; }
+  }
+
+  function renderMap() {
+    var saved = savedMap();
+    mapEl.innerHTML = FIELDS.map(function (f) {
+      var opts = ['<option value="">— none —</option>'].concat(headers.map(function (h) {
+        var sel = saved[f.k] === h ? ' selected' : '';
+        return '<option value="' + h.replace(/"/g, '&quot;') + '"' + sel + '>' + h.replace(/</g, '&lt;') + '</option>';
+      })).join('');
+      return '<div><label for="m_' + f.k + '">' + f.label + (f.req ? ' <span class="req">*</span>' : '') +
+             '</label><select id="m_' + f.k + '" data-field="' + f.k + '">' + opts + '</select></div>';
+    }).join('');
+  }
+
+  function currentMap() {
+    var m = {};
+    FIELDS.forEach(function (f) {
+      var el = document.getElementById('m_' + f.k);
+      if (el && el.value) m[f.k] = el.value;
+    });
+    return m;
+  }
+
+  /* ---- CSV: delimiter sniffing + quoted fields ---- */
+  function parseCsv(text) {
+    var firstLine = text.slice(0, text.indexOf('\n') > -1 ? text.indexOf('\n') : text.length);
+    var counts = [[';', (firstLine.match(/;/g) || []).length],
+                  [',', (firstLine.match(/,/g) || []).length],
+                  ['\t', (firstLine.match(/\t/g) || []).length],
+                  ['|', (firstLine.match(/\|/g) || []).length]];
+    counts.sort(function (a, b) { return b[1] - a[1]; });
+    var delim = counts[0][1] > 0 ? counts[0][0] : ';';
+
+    var out = [], row = [], cell = '', inQ = false;
+    for (var i = 0; i < text.length; i++) {
+      var c = text[i];
+      if (inQ) {
+        if (c === '"') {
+          if (text[i + 1] === '"') { cell += '"'; i++; } else { inQ = false; }
+        } else { cell += c; }
+      } else if (c === '"') {
+        inQ = true;
+      } else if (c === delim) {
+        row.push(cell); cell = '';
+      } else if (c === '\n') {
+        row.push(cell); cell = '';
+        if (row.some(function (v) { return v.trim() !== ''; })) out.push(row);
+        row = [];
+      } else if (c !== '\r') {
+        cell += c;
+      }
+    }
+    row.push(cell);
+    if (row.some(function (v) { return v.trim() !== ''; })) out.push(row);
+    if (!out.length) return { headers: [], records: [] };
+
+    var hdr = out[0].map(function (h) { return h.trim().replace(/^﻿/, ''); });
+    var recs = out.slice(1).map(function (r) {
+      var o = {};
+      hdr.forEach(function (h, idx) { o[h] = (r[idx] || '').trim(); });
+      return o;
+    });
+    return { headers: hdr, records: recs };
+  }
+
+  /* ---- XML: treat the most frequent repeated element as the record ---- */
+  function parseXml(text) {
+    var doc = new DOMParser().parseFromString(text, 'application/xml');
+    if (doc.querySelector('parsererror')) throw new Error('XML could not be parsed.');
+
+    var tally = {};
+    var all = doc.getElementsByTagName('*');
+    for (var i = 0; i < all.length; i++) {
+      var el = all[i];
+      if (el.children.length > 0) {
+        var key = el.tagName;
+        tally[key] = (tally[key] || 0) + 1;
+      }
+    }
+    var best = null, bestN = 0;
+    Object.keys(tally).forEach(function (k) { if (tally[k] > bestN) { bestN = tally[k]; best = k; } });
+    if (!best) throw new Error('No repeating element found in the XML.');
+
+    var nodes = doc.getElementsByTagName(best);
+    var hdrSet = {}, recs = [];
+    for (var n = 0; n < nodes.length; n++) {
+      var o = {};
+      var kids = nodes[n].children;
+      for (var k = 0; k < kids.length; k++) {
+        var name = kids[k].tagName;
+        var val = (kids[k].textContent || '').trim();
+        if (o[name] === undefined) { o[name] = val; } else { o[name] += ' | ' + val; }
+        hdrSet[name] = true;
+      }
+      for (var a = 0; a < nodes[n].attributes.length; a++) {
+        var at = nodes[n].attributes[a];
+        o['@' + at.name] = at.value;
+        hdrSet['@' + at.name] = true;
+      }
+      if (Object.keys(o).length) recs.push(o);
+    }
+    return { headers: Object.keys(hdrSet), records: recs };
+  }
+
+  document.getElementById('file').addEventListener('change', function (e) {
+    var f = e.target.files && e.target.files[0];
+    if (!f) return;
+    var reader = new FileReader();
+    reader.onload = function () {
+      var text = String(reader.result);
+      try {
+        var parsed = /^\s*<\?xml|^\s*</.test(text) ? parseXml(text) : parseCsv(text);
+        headers = parsed.headers;
+        records = parsed.records;
+        document.getElementById('loadStat').textContent =
+          f.name + ' — ' + records.length + ' rows, ' + headers.length + ' columns.';
+        document.getElementById('loadStat').className = 'stat';
+        renderMap();
+      } catch (err) {
+        headers = []; records = []; renderMap();
+        var s = document.getElementById('loadStat');
+        s.textContent = 'Could not read this file: ' + err.message;
+        s.className = 'stat bad';
+      }
+    };
+    reader.readAsText(f, 'utf-8');
+  });
+
+  function slug(s) {
+    return String(s).toLowerCase()
+      .replace(/[ąàâä]/g, 'a').replace(/[ćç]/g, 'c').replace(/[ęèéêë]/g, 'e')
+      .replace(/ł/g, 'l').replace(/ń/g, 'n').replace(/[óòôö]/g, 'o')
+      .replace(/[śş]/g, 's').replace(/[żź]/g, 'z').replace(/[ûüù]/g, 'u')
+      .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 48);
+  }
+
+  function num(v) {
+    var s = String(v == null ? '' : v).replace(/\s|zł|PLN/gi, '').replace(',', '.').replace(/[^0-9.\-]/g, '');
+    var n = parseFloat(s);
+    return isFinite(n) ? n : NaN;
+  }
+
+  function retail(wholesale, mult, roundTo, minus) {
+    var p = wholesale * mult;
+    if (roundTo > 0) p = Math.round(p / roundTo) * roundTo;
+    p = p - minus;
+    return Math.max(1, Math.round(p));
+  }
+
+  document.getElementById('convert').addEventListener('click', function () {
+    var m = currentMap();
+    var stat = document.getElementById('convStat');
+
+    if (!records.length) { stat.textContent = 'Load a feed first.'; stat.className = 'stat bad'; return; }
+    var missing = FIELDS.filter(function (f) { return f.req && !m[f.k]; }).map(function (f) { return f.label; });
+    if (missing.length) {
+      stat.textContent = 'Map these first: ' + missing.join(', ') + '.';
+      stat.className = 'stat bad';
+      return;
+    }
+    try { localStorage.setItem(LS_MAP, JSON.stringify(m)); } catch (e) {}
+
+    var mult = parseFloat(document.getElementById('mult').value) || 2.2;
+    var roundTo = parseInt(document.getElementById('round').value, 10) || 0;
+    var minus = parseInt(document.getElementById('minus').value, 10) || 0;
+
+    var seen = {}, items = [], skipped = 0;
+
+    records.forEach(function (r) {
+      var rawId = r[m.id], name = r[m.name], w = num(r[m.price]);
+      if (!rawId || !name || !isFinite(w) || w <= 0) { skipped++; return; }
+
+      var id = slug(rawId) || slug(name);
+      if (seen[id]) { id = id + '-' + (++seen[id]); } else { seen[id] = 1; }
+
+      /* Keep unmapped/unknown supplier categories out of the nav rather than
+         inventing one — 'uncategorised' is visible and fixable, a guess isn't. */
+      var cat = m.cat ? slug(r[m.cat]) : '';
+      items.push({
+        id: id,
+        name: String(name).trim(),
+        cat: cat || 'uncategorised',
+        wholesale: w,
+        price: retail(w, mult, roundTo, minus),
+        material: m.material ? String(r[m.material] || '').trim() : '',
+        blurb: m.blurb ? String(r[m.blurb] || '').trim().replace(/\s+/g, ' ').slice(0, 240) : '',
+        image: m.image ? String(r[m.image] || '').trim().split(' | ')[0] : '',
+        stock: m.stock ? String(r[m.stock] || '').trim() : ''
+      });
+    });
+
+    stat.textContent = items.length + ' converted' + (skipped ? ', ' + skipped + ' skipped (missing id, name, or price)' : '') + '.';
+    stat.className = 'stat';
+
+    var tb = document.getElementById('preview');
+    tb.innerHTML = items.slice(0, 40).map(function (p) {
+      return '<tr>' +
+        '<td>' + p.id + '</td>' +
+        '<td>' + p.name.slice(0, 40) + '</td>' +
+        '<td>' + p.cat + '</td>' +
+        '<td class="num">' + p.wholesale.toFixed(2) + '</td>' +
+        '<td class="num">' + p.price + '</td>' +
+        '<td>' + (p.material || '—').slice(0, 24) + '</td>' +
+        '<td>' + (p.image ? 'yes' : '—') + '</td>' +
+      '</tr>';
+    }).join('') || '<tr><td colspan="7" class="bad">Nothing usable in this feed with the current mapping.</td></tr>';
+
+    var body = items.map(function (p) {
+      return '  {\n' +
+        '    id: ' + JSON.stringify(p.id) + ', name: ' + JSON.stringify(p.name) + ', cat: ' + JSON.stringify(p.cat) + ', price: ' + p.price + ',\n' +
+        '    material: ' + JSON.stringify(p.material) + ',\n' +
+        '    image: ' + JSON.stringify(p.image) + ',\n' +
+        '    blurb: ' + JSON.stringify(p.blurb) + ',\n' +
+        '    care: "",\n' +
+        '    specs: [["Material", ' + JSON.stringify(p.material) + ']]\n' +
+        '    /* wholesale ' + p.wholesale.toFixed(2) + ' zl' + (p.stock ? ', stock: ' + JSON.stringify(p.stock) : '') + ' */\n' +
+      '  }';
+    }).join(',\n');
+
+    document.getElementById('out').value =
+      '/* Generated from a wholesaler feed on ' + new Date().toISOString().slice(0, 10) + '.\n' +
+      '   Retail = wholesale x ' + mult + (roundTo ? ', rounded to ' + roundTo + ' zl' : '') + (minus ? ', minus ' + minus + ' zl' : '') + '.\n' +
+      '   Rewrite blurbs in the shop voice and fill in care notes before publishing. */\n' +
+      'var CATALOG = [\n' + body + '\n];\n';
+  });
+
+  document.getElementById('copy').addEventListener('click', function () {
+    var t = document.getElementById('out');
+    t.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    if (navigator.clipboard) navigator.clipboard.writeText(t.value).catch(function () {});
+  });
+
+  document.getElementById('dl').addEventListener('click', function () {
+    var blob = new Blob([document.getElementById('out').value], { type: 'text/javascript;charset=utf-8' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'catalog-products.js';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(a.href);
+  });
+
+  renderMap();
+})();
+</script>
+</body>
+</html>

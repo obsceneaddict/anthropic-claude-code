@@ -283,6 +283,15 @@ footer.foot { border-top: 1px solid var(--border); padding-block: 2.5rem 2rem; }
 .spec p { color: var(--text-dim); font-size: var(--t-sm); margin: 0; }
 .spec__k { font-size: var(--t-xs); color: var(--text-faint); font-variant-numeric: tabular-nums; display: block; margin-bottom: 0.6rem; }
 
+/* -------------------------------------------------------- product media */
+/* Tiles hold either a feed image or a placeholder caption; the image fills the
+   tile and a failed load reverts to the placeholder look via .is-empty. */
+.card__media img, .gallery__main img, .gallery__thumb img, .line__thumb img {
+  width: 100%; height: 100%; object-fit: cover; display: block; border-radius: inherit;
+}
+.card__media.is-empty::after,
+.gallery__main.is-empty::after { content: "Product image"; font-size: var(--t-xs); color: var(--text-faint); }
+
 .section { padding-block: clamp(3rem, 7vw, 4.5rem); border-top: 1px solid var(--border); }
 .section__head { margin-bottom: 1.75rem; }
 .section__head h2 { font-size: var(--t-xl); margin-bottom: 0.35rem; }

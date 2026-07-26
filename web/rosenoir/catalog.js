@@ -158,6 +158,23 @@ function esc(s) {
     .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 }
 
+/* Only http(s) and protocol-relative image URLs — never javascript: or data:
+   from a supplier feed we don't control. */
+function safeImageUrl(u) {
+  var s = String(u || '').trim();
+  return /^(https?:)?\/\//i.test(s) ? s : '';
+}
+
+/* Product media: renders the feed image when there is one, otherwise the
+   placeholder tile. `inner` is the placeholder caption. A broken remote image
+   falls back to the placeholder rather than showing a torn-icon box. */
+function mediaInner(p, placeholder) {
+  var src = safeImageUrl(p && p.image);
+  if (!src) return esc(placeholder || 'Product image');
+  return '<img src="' + esc(src) + '" alt="' + esc(p.name || '') + '" loading="lazy" ' +
+         'onerror="this.parentNode.classList.add(&quot;is-empty&quot;);this.remove()">';
+}
+
 /* ------------------------------------------------------------------- cart */
 
 var Cart = {
@@ -248,7 +265,7 @@ var Cart = {
       if (!p) continue;
       html +=
         '<div class="line">' +
-          '<div class="line__thumb"></div>' +
+          '<div class="line__thumb">' + (safeImageUrl(p.image) ? mediaInner(p, '') : '') + '</div>' +
           '<div>' +
             '<div class="line__name">' + esc(p.name) + '</div>' +
             '<div class="line__cat">' + esc(catLabel(p.cat)) + '</div>' +
