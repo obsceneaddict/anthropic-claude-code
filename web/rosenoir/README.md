@@ -1,31 +1,26 @@
-# Rose Noir — premium boudoir landing page
+# Rose Noir — premium sex shop, front end
 
-A single self-contained file: `index.html`. No build step, no dependencies,
-no external fonts/scripts/images/trackers. Just open it or drop it on any
-static host.
+Static multi-page site. No build step, no framework, no external fonts,
+scripts, images, or trackers. Drop the folder on any static host.
 
-## Publish it today (pick one — all free, ~2 minutes)
+## Files
 
-**Fastest, zero account — Netlify Drop**
-1. Go to [app.netlify.com/drop](https://app.netlify.com/drop)
-2. Drag the `web/rosenoir/` folder onto the page.
-3. You get a live `*.netlify.app` URL instantly. The newsletter form
-   (**Inner Circle**) is already wired for Netlify Forms — submissions show
-   up under Forms in your Netlify dashboard automatically, no code needed.
+| File | What it is |
+|---|---|
+| `index.html` | Home + catalogue with category filters |
+| `product.html` | Product detail, driven by `?id=` |
+| `terms.html` | Terms of sale (*regulamin*) |
+| `privacy.html` | Privacy / RODO |
+| `returns.html` | Returns & 14-day withdrawal |
+| `age-policy.html` | 18+ policy |
+| `style.css` | Shared design system |
+| `catalog.js` | Product data, cart, shared page chrome |
 
-**Your own domain (e.g. rosenoir.pl)**
-- Deploy as above, then in Netlify: Domain settings → add your custom domain
-  and point your DNS there. Or use any host (Vercel, Cloudflare Pages,
-  GitHub Pages) — it's just one static HTML file.
+## Publish it (~2 minutes, free)
 
-## What's inside
-
-- **18+ age gate** — remembered per session so it doesn't nag on every visit.
-- **Product catalogue** — 8 items in a dense grid with working category filters
-  and a live result count.
-- **How we ship / Materials** — the discretion and body-safe-materials specs,
-  which are the real purchase drivers in this category.
-- Newsletter + footer. Dark-only by design.
+Go to [app.netlify.com/drop](https://app.netlify.com/drop) and drag this
+`rosenoir/` folder onto the page. You get a live URL immediately. For a custom
+domain (`rosenoir.pl`), add it under Domain settings and point your DNS there.
 
 ## Design tokens (client-approved, clean/technical direction)
 
@@ -40,19 +35,44 @@ radius    6px          shadows  none/minimal
 ```
 
 An earlier editorial version (Didot display type, wine/rose palette, animated
-canvas hero) is in git history if you want to compare:
-`git log --oneline -- web/rosenoir/index.html`
+canvas hero) is in git history: `git log --oneline -- web/rosenoir/index.html`
 
-## Before you go live — quick checklist
+## Cart
 
-- [ ] Replace the placeholder footer legal links (`Terms of Sale`, `Privacy`,
-      `Shipping & Returns`, `18+ Policy`) with real pages. For selling adult
-      products in Poland you'll want real Regulamin / Polityka prywatności /
-      Zwroty — **DO WERYFIKACJI** with a lawyer.
-- [ ] Swap the contact email `hello@rosenoir.pl` for your real inbox.
-- [ ] Decide language: current brand copy is English + French (premium,
-      timeless). A full **Polish** version can be swapped in quickly if you're
-      selling primarily to the PL market — this is an ASSUMPTION worth confirming.
-- [ ] This is a brand/landing page, not a checkout yet. When you're ready to
-      actually sell, wire it to a store backend (Shopify, Stripe + a catalog,
-      or a headless commerce host).
+Real, working, client-side: add/remove/quantity, persisted to `localStorage`,
+free-delivery threshold at 300 zł. Adding an item gives inline button feedback
+rather than opening the drawer, so browsing isn't interrupted.
+
+**Checkout is deliberately not wired to a payment processor.** The button
+explains that no order can be placed and no card details are collected. Do not
+replace that message with a fake success state — connect a real provider
+(Stripe, Przelewy24, PayU) first.
+
+## Before you sell anything
+
+- [ ] **Have a Polish consumer-law specialist review the four legal pages.**
+      They are substantive drafts, not lawyer-reviewed. Each carries a
+      `DO WERYFIKACJI` banner explaining what needs checking. The most
+      important clause is the hygiene exclusion from the 14-day withdrawal
+      right in `returns.html` — get that wording right.
+- [ ] **Insert your company details** — registered name, address, NIP, REGON
+      (and KRS if applicable). Polish law requires these to be displayed;
+      they're marked as placeholders in `terms.html` and `privacy.html`.
+- [ ] **Polish-language versions.** The site is in English. Your customers are
+      Polish consumers, and consumer-facing legal terms should be in a language
+      they understand. This is an ASSUMPTION worth confirming — say the word
+      and the whole site can be translated.
+- [ ] **Product photography.** Every image is a placeholder. This is now the
+      single biggest gap — a catalogue of grey boxes won't convert.
+- [ ] **Real inventory.** Names, prices, materials, and copy in `catalog.js`
+      are stand-ins. Prices are PLN gross.
+- [ ] Swap `hello@rosenoir.pl`, `returns@rosenoir.pl`, `privacy@rosenoir.pl`
+      for real inboxes.
+- [ ] Register the neutral billing descriptor with your acquirer, and confirm
+      the exact wording is permitted.
+
+## Verified
+
+Rendered headless at 1440px and 390px: catalogue filters, cart add/quantity/
+remove/persistence across navigation, free-delivery threshold, missing-product
+fallback, all four legal pages, no console errors, no horizontal overflow.
