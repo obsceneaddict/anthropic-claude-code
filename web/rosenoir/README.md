@@ -5,16 +5,23 @@ scripts, images, or trackers. Drop the folder on any static host.
 
 ## Files
 
-| File | What it is |
+| Plik | Co to |
 |---|---|
-| `index.html` | Home + catalogue with category filters |
-| `product.html` | Product detail, driven by `?id=` |
-| `terms.html` | Terms of sale (*regulamin*) |
-| `privacy.html` | Privacy / RODO |
-| `returns.html` | Returns & 14-day withdrawal |
-| `age-policy.html` | 18+ policy |
-| `style.css` | Shared design system |
-| `catalog.js` | Product data, cart, shared page chrome |
+| `index.html` | Strona główna + katalog z filtrami kategorii |
+| `produkt.html` | Karta produktu, sterowana `?id=` |
+| `regulamin.html` | Regulamin sklepu |
+| `prywatnosc.html` | Polityka prywatności / RODO |
+| `zwroty.html` | Zwroty i odstąpienie od umowy |
+| `polityka-18.html` | Polityka 18+ |
+| `style.css` | Wspólny system projektowy |
+| `catalog.js` | Dane produktów, koszyk, wspólne elementy stron |
+| `tools/ewidencja.html` | Ewidencja sprzedaży (działalność nierejestrowana) |
+| `tools/import-feed.html` | Import feedu hurtowni → katalog *(interfejs po angielsku — narzędzie wewnętrzne)* |
+| `BIZNES.md` | Instrukcja operacyjna: limity, NIP, obowiązki, marketing |
+
+**Język:** serwis jest po polsku. Angielska wersja istnieje w historii gita —
+`git log --oneline -- web/rosenoir/index.html`. Nie utrzymujemy dwóch wersji
+równolegle, dopóki nie ma realnego powodu (eksport).
 
 ## Publish it (~2 minutes, free)
 

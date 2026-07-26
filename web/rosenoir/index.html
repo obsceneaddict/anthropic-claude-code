@@ -1,28 +1,29 @@
 <!doctype html>
-<html lang="en">
+<html lang="pl">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rose Noir — Premium Intimacy, Discreetly Delivered</title>
-<meta name="description" content="A curated premium sex shop. Body-safe materials, unbranded packaging, 24–48h delivery across Poland.">
+<title>Rose Noir — intymność klasy premium, dostarczona dyskretnie</title>
+<meta name="description" content="Butik erotyczny premium. Materiały bezpieczne dla ciała, nieoznaczone opakowanie, dostawa w 24–48 h na terenie Polski.">
 <meta name="theme-color" content="#0B0B0E">
-<meta property="og:title" content="Rose Noir — Premium Intimacy, Discreetly Delivered">
-<meta property="og:description" content="Curated, body-safe, and shipped in plain packaging.">
+<meta property="og:title" content="Rose Noir — intymność klasy premium, dostarczona dyskretnie">
+<meta property="og:description" content="Starannie wybrany katalog, materiały bezpieczne dla ciała, nieoznaczone opakowanie.">
 <meta property="og:type" content="website">
+<meta property="og:locale" content="pl_PL">
 <link rel="stylesheet" href="style.css">
 <style>
   /* hero */
   .hero { border-bottom: 1px solid var(--border); }
-  .hero__inner { padding-block: clamp(2.5rem, 6vw, 4rem); max-width: 44rem; }
+  .hero__inner { padding-block: clamp(2.5rem, 6vw, 4rem); max-width: 46rem; }
   .hero h1 { font-size: clamp(var(--t-2xl), 6vw, var(--t-4xl)); margin-bottom: 0.9rem; }
-  .hero p { color: var(--text-dim); font-size: var(--t-lg); margin: 0 0 1.75rem; max-width: 34rem; line-height: 1.45; }
+  .hero p { color: var(--text-dim); font-size: var(--t-lg); margin: 0 0 1.75rem; max-width: 36rem; line-height: 1.45; }
   .hero__cta { display: flex; gap: 0.6rem; flex-wrap: wrap; }
 
   .trust { display: flex; gap: 2rem; flex-wrap: wrap; padding-block: 1rem; border-top: 1px solid var(--border); }
   .trust div { display: flex; align-items: center; gap: 0.5rem; font-size: var(--t-sm); color: var(--text-dim); }
   .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--ok); flex: none; }
 
-  /* toolbar */
+  /* pasek filtrów */
   .toolbar { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; padding-block: 1.25rem; }
   .chip {
     font-size: var(--t-sm); color: var(--text-dim);
@@ -35,7 +36,7 @@
   .chip[aria-pressed="true"] { color: var(--text); background: var(--accent-quiet); border-color: var(--accent); }
   .toolbar__count { margin-left: auto; font-size: var(--t-sm); color: var(--text-faint); font-variant-numeric: tabular-nums; }
 
-  /* product grid — discrete bordered cards so filtering collapses cleanly */
+  /* siatka produktów — osobne karty z obramowaniem, żeby filtrowanie zwijało się czysto */
   .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; padding-bottom: 1rem; }
   @media (max-width: 980px) { .grid { grid-template-columns: repeat(3, 1fr); } }
   @media (max-width: 720px) { .grid { grid-template-columns: repeat(2, 1fr); } }
@@ -67,11 +68,11 @@
 
 <div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
   <div class="gate__card">
-    <h2 id="gateTitle">Confirm your age</h2>
-    <p>Rose Noir sells products intended for adults. Confirm you are 18 or older to continue.</p>
+    <h2 id="gateTitle">Potwierdź swój wiek</h2>
+    <p>Rose Noir sprzedaje produkty przeznaczone dla osób dorosłych. Potwierdź, że masz ukończone 18 lat.</p>
     <div class="gate__row">
-      <button class="btn btn--primary" id="gateEnter">I am 18 or older</button>
-      <a class="btn" href="https://www.google.com">Leave</a>
+      <button class="btn btn--primary" id="gateEnter">Mam ukończone 18 lat</button>
+      <a class="btn" href="https://www.google.pl">Wychodzę</a>
     </div>
   </div>
 </div>
@@ -80,14 +81,14 @@
   <div class="shell top__inner">
     <a class="brand" href="index.html">Rose <em>Noir</em></a>
     <nav>
-      <a href="#shop" aria-current="page">Shop</a>
-      <a href="#discretion">Discretion</a>
-      <a href="#materials">Materials</a>
-      <a href="returns.html">Returns</a>
+      <a href="#sklep" aria-current="page">Sklep</a>
+      <a href="#wysylka">Wysyłka</a>
+      <a href="#materialy">Materiały</a>
+      <a href="zwroty.html">Zwroty</a>
     </nav>
     <div class="top__actions">
-      <button class="cart-btn" data-open-cart type="button">Cart <b data-cart-count>0</b></button>
-      <button class="btn btn--primary" type="button">Sign in</button>
+      <button class="cart-btn" data-open-cart type="button">Koszyk <b data-cart-count>0</b></button>
+      <button class="btn btn--primary" type="button">Zaloguj się</button>
     </div>
   </div>
 </header>
@@ -95,76 +96,76 @@
 <section class="hero">
   <div class="shell">
     <div class="hero__inner">
-      <h1>Premium intimacy, discreetly delivered.</h1>
-      <p>A short, vetted catalogue. Body-safe materials only, unbranded packaging, and 24&ndash;48h delivery across Poland.</p>
+      <h1>Intymność klasy premium. Dostarczona dyskretnie.</h1>
+      <p>Krótki, starannie wybrany katalog. Wyłącznie materiały bezpieczne dla ciała, nieoznaczone opakowanie i dostawa w 24&ndash;48 h na terenie Polski.</p>
       <div class="hero__cta">
-        <a class="btn btn--primary btn--lg" href="#shop">Browse the catalogue</a>
-        <a class="btn btn--lg" href="#discretion">How we ship</a>
+        <a class="btn btn--primary btn--lg" href="#sklep">Przejrzyj katalog</a>
+        <a class="btn btn--lg" href="#wysylka">Jak wysyłamy</a>
       </div>
     </div>
     <div class="trust">
-      <div><span class="dot"></span> Plain, unbranded packaging</div>
-      <div><span class="dot"></span> Neutral billing descriptor</div>
-      <div><span class="dot"></span> Free delivery over 300 zł</div>
-      <div><span class="dot"></span> Body-safe materials, documented</div>
+      <div><span class="dot"></span> Nieoznaczone opakowanie</div>
+      <div><span class="dot"></span> Neutralny opis na wyciągu</div>
+      <div><span class="dot"></span> Darmowa dostawa od 300 zł</div>
+      <div><span class="dot"></span> Materiały bezpieczne dla ciała</div>
     </div>
   </div>
 </section>
 
-<section id="shop">
+<section id="sklep">
   <div class="shell">
-    <div class="toolbar" id="filters" role="group" aria-label="Filter catalogue"></div>
+    <div class="toolbar" id="filters" role="group" aria-label="Filtruj katalog"></div>
     <div class="grid" id="grid"></div>
   </div>
 </section>
 
-<section class="section" id="discretion">
+<section class="section" id="wysylka">
   <div class="shell">
     <div class="section__head">
-      <h2>How we ship</h2>
-      <p>The details that matter most are the ones nobody else sees.</p>
+      <h2>Jak wysyłamy</h2>
+      <p>Rzeczy, które mają tu największe znaczenie, to te, których nikt poza Tobą nie zobaczy.</p>
     </div>
     <div class="specs">
       <div class="spec">
-        <span class="spec__k">01 &middot; Packaging</span>
-        <h3>Plain and unbranded</h3>
-        <p>Grey outer box. No logo, no product name, no indication of contents on any label.</p>
+        <span class="spec__k">01 &middot; Opakowanie</span>
+        <h3>Zwykłe, bez oznaczeń</h3>
+        <p>Szary karton zewnętrzny. Bez logo, bez nazwy produktu, bez żadnej wskazówki co do zawartości na etykiecie.</p>
       </div>
       <div class="spec">
-        <span class="spec__k">02 &middot; Billing</span>
-        <h3>Neutral descriptor</h3>
-        <p>Your statement shows a neutral trading name, never the shop name.</p>
+        <span class="spec__k">02 &middot; Płatność</span>
+        <h3>Neutralny opis</h3>
+        <p>Na wyciągu bankowym zobaczysz neutralną nazwę, nigdy nazwy sklepu.</p>
       </div>
       <div class="spec">
-        <span class="spec__k">03 &middot; Delivery</span>
-        <h3>24&ndash;48h, unmarked</h3>
-        <p>Courier or parcel locker across Poland. Warsaw same-day on orders before 13:00.</p>
+        <span class="spec__k">03 &middot; Dostawa</span>
+        <h3>24&ndash;48 h, bez oznaczeń</h3>
+        <p>Kurier lub paczkomat na terenie całej Polski. W Warszawie tego samego dnia przy zamówieniach do 13:00.</p>
       </div>
     </div>
   </div>
 </section>
 
-<section class="section" id="materials">
+<section class="section" id="materialy">
   <div class="shell">
     <div class="section__head">
-      <h2>Materials, documented</h2>
-      <p>Every item lists what it is actually made of. If a material isn't body-safe, we don't stock it.</p>
+      <h2>Materiały, udokumentowane</h2>
+      <p>Przy każdym produkcie piszemy, z czego jest naprawdę zrobiony. Jeśli materiał nie jest bezpieczny dla ciała, nie mamy go w ofercie.</p>
     </div>
     <div class="specs">
       <div class="spec">
-        <span class="spec__k">Silicone</span>
-        <h3>Medical grade only</h3>
-        <p>Non-porous and fully sterilisable. No PVC, no phthalates, no "jelly" blends.</p>
+        <span class="spec__k">Silikon</span>
+        <h3>Wyłącznie medyczny</h3>
+        <p>Nieporowaty i w pełni sterylizowalny. Bez PVC, bez ftalanów, bez mieszanek typu „jelly".</p>
       </div>
       <div class="spec">
-        <span class="spec__k">Glass</span>
-        <h3>Borosilicate</h3>
-        <p>Annealed, seamless, and thermal-shock rated. Inspected individually before dispatch.</p>
+        <span class="spec__k">Szkło</span>
+        <h3>Borokrzemowe</h3>
+        <p>Odprężane, bezszwowe, odporne na szok termiczny. Sprawdzane pojedynczo przed wysyłką.</p>
       </div>
       <div class="spec">
-        <span class="spec__k">Textiles</span>
-        <h3>Natural fibres</h3>
-        <p>Mulberry silk and Leavers lace from European mills, with supplier certificates on file.</p>
+        <span class="spec__k">Tkaniny</span>
+        <h3>Włókna naturalne</h3>
+        <p>Jedwab morwowy i koronka Leavers z europejskich przędzalni, z certyfikatami dostawców w dokumentacji.</p>
       </div>
     </div>
   </div>
@@ -175,27 +176,27 @@
     <div class="foot__grid">
       <div class="foot__brand">
         <span class="brand">Rose <em>Noir</em></span>
-        <p>A curated premium sex shop. Warsaw, Poland.</p>
+        <p>Butik erotyczny premium. Warszawa.</p>
       </div>
       <div class="foot__col">
-        <h4>Shop</h4>
-        <a href="#shop">Toys</a>
-        <a href="#shop">Lingerie</a>
-        <a href="#shop">Restraints</a>
-        <a href="#shop">Gift sets</a>
+        <h4>Sklep</h4>
+        <a href="#sklep">Zabawki</a>
+        <a href="#sklep">Bielizna</a>
+        <a href="#sklep">Krępowanie</a>
+        <a href="#sklep">Zestawy prezentowe</a>
       </div>
       <div class="foot__col">
-        <h4>Company</h4>
-        <a href="#discretion">How we ship</a>
-        <a href="#materials">Materials</a>
-        <a href="mailto:hello@rosenoir.pl">Contact</a>
+        <h4>O nas</h4>
+        <a href="#wysylka">Jak wysyłamy</a>
+        <a href="#materialy">Materiały</a>
+        <a href="mailto:kontakt@rosenoir.pl">Kontakt</a>
       </div>
       <div class="foot__col">
-        <h4>Legal</h4>
-        <a href="terms.html">Terms of sale</a>
-        <a href="privacy.html">Privacy</a>
-        <a href="returns.html">Returns</a>
-        <a href="age-policy.html">18+ policy</a>
+        <h4>Informacje prawne</h4>
+        <a href="regulamin.html">Regulamin</a>
+        <a href="prywatnosc.html">Polityka prywatności</a>
+        <a href="zwroty.html">Zwroty</a>
+        <a href="polityka-18.html">Polityka 18+</a>
       </div>
     </div>
     <div class="foot__bar">
@@ -206,10 +207,10 @@
 </footer>
 
 <div class="drawer-scrim" id="cartScrim"></div>
-<aside class="drawer" id="cartDrawer" aria-hidden="true" aria-label="Cart">
+<aside class="drawer" id="cartDrawer" aria-hidden="true" aria-label="Koszyk">
   <div class="drawer__head">
-    <h2>Cart</h2>
-    <button class="btn btn--ghost" id="cartClose" type="button">Close</button>
+    <h2>Koszyk</h2>
+    <button class="btn btn--ghost" id="cartClose" type="button">Zamknij</button>
   </div>
   <div class="drawer__body" id="cartBody"></div>
   <div class="drawer__foot" id="cartFoot"></div>
@@ -227,21 +228,21 @@
   function cardHTML(p) {
     return '' +
       '<article class="card" data-cat="' + esc(p.cat) + '">' +
-        '<a class="card__media" href="product.html?id=' + encodeURIComponent(p.id) + '" aria-label="' + esc(p.name) + '">' + mediaInner(p) + '</a>' +
+        '<a class="card__media" href="produkt.html?id=' + encodeURIComponent(p.id) + '" aria-label="' + esc(p.name) + '">' + mediaInner(p) + '</a>' +
         '<span class="card__cat">' + esc(catLabel(p.cat)) + '</span>' +
-        '<a class="card__name" href="product.html?id=' + encodeURIComponent(p.id) + '">' + esc(p.name) +
+        '<a class="card__name" href="produkt.html?id=' + encodeURIComponent(p.id) + '">' + esc(p.name) +
           (p.tag ? ' <span class="tag">' + esc(p.tag) + '</span>' : '') +
         '</a>' +
         '<div class="card__meta">' +
           '<span class="card__price">' + esc(zl(p.price)) + '</span>' +
           '<span class="card__mat">' + esc(p.material) + '</span>' +
         '</div>' +
-        '<button class="btn btn--block" type="button" data-add="' + esc(p.id) + '">Add to cart</button>' +
+        '<button class="btn btn--block" type="button" data-add="' + esc(p.id) + '">Do koszyka</button>' +
       '</article>';
   }
 
   function renderFilters() {
-    var html = '<button class="chip" aria-pressed="true" data-filter="all">All</button>';
+    var html = '<button class="chip" aria-pressed="true" data-filter="all">Wszystko</button>';
     for (var i = 0; i < CATEGORIES.length; i++) {
       html += '<button class="chip" aria-pressed="false" data-filter="' + esc(CATEGORIES[i].id) + '">' + esc(CATEGORIES[i].label) + '</button>';
     }
@@ -253,13 +254,13 @@
     var shown = CATALOG.filter(function (p) { return active === 'all' || p.cat === active; });
     if (!shown.length) {
       grid.style.display = 'block';
-      grid.innerHTML = '<p class="card__empty">Nothing in this category yet.</p>';
+      grid.innerHTML = '<p class="card__empty">W tej kategorii nie mamy jeszcze nic w ofercie.</p>';
     } else {
       grid.style.display = '';
       grid.innerHTML = shown.map(cardHTML).join('');
     }
     var c = document.getElementById('count');
-    if (c) c.textContent = shown.length + (shown.length === 1 ? ' product' : ' products');
+    if (c) c.textContent = shown.length + ' ' + plural(shown.length, 'produkt', 'produkty', 'produktów');
   }
 
   filters.addEventListener('click', function (e) {

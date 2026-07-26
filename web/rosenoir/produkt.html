@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html lang="pl">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Rose Noir</title>
-<meta name="description" content="Product detail — Rose Noir.">
+<meta name="description" content="Karta produktu — Rose Noir.">
 <meta name="theme-color" content="#0B0B0E">
 <link rel="stylesheet" href="style.css">
 <style>
@@ -12,8 +12,8 @@
   .crumbs a { color: var(--text-dim); }
   .crumbs a:hover { color: var(--text); }
 
-  /* minmax(0,…) so an aspect-ratio child can't blow the column out and push
-     the next section into an overlap */
+  /* minmax(0,…) żeby element z aspect-ratio nie rozepchnął kolumny i nie wepchnął
+     następnej sekcji w nakładanie */
   .detail {
     display: grid;
     grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
@@ -87,11 +87,11 @@
 
 <div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
   <div class="gate__card">
-    <h2 id="gateTitle">Confirm your age</h2>
-    <p>Rose Noir sells products intended for adults. Confirm you are 18 or older to continue.</p>
+    <h2 id="gateTitle">Potwierdź swój wiek</h2>
+    <p>Rose Noir sprzedaje produkty przeznaczone dla osób dorosłych. Potwierdź, że masz ukończone 18 lat.</p>
     <div class="gate__row">
-      <button class="btn btn--primary" id="gateEnter">I am 18 or older</button>
-      <a class="btn" href="https://www.google.com">Leave</a>
+      <button class="btn btn--primary" id="gateEnter">Mam ukończone 18 lat</button>
+      <a class="btn" href="https://www.google.pl">Wychodzę</a>
     </div>
   </div>
 </div>
@@ -100,14 +100,14 @@
   <div class="shell top__inner">
     <a class="brand" href="index.html">Rose <em>Noir</em></a>
     <nav>
-      <a href="index.html#shop">Shop</a>
-      <a href="index.html#discretion">Discretion</a>
-      <a href="index.html#materials">Materials</a>
-      <a href="returns.html">Returns</a>
+      <a href="index.html#sklep">Sklep</a>
+      <a href="index.html#wysylka">Wysyłka</a>
+      <a href="index.html#materialy">Materiały</a>
+      <a href="zwroty.html">Zwroty</a>
     </nav>
     <div class="top__actions">
-      <button class="cart-btn" data-open-cart type="button">Cart <b data-cart-count>0</b></button>
-      <button class="btn btn--primary" type="button">Sign in</button>
+      <button class="cart-btn" data-open-cart type="button">Koszyk <b data-cart-count>0</b></button>
+      <button class="btn btn--primary" type="button">Zaloguj się</button>
     </div>
   </div>
 </header>
@@ -119,25 +119,25 @@
     <div class="foot__grid">
       <div class="foot__brand">
         <span class="brand">Rose <em>Noir</em></span>
-        <p>A curated premium sex shop. Warsaw, Poland.</p>
+        <p>Butik erotyczny premium. Warszawa.</p>
       </div>
       <div class="foot__col">
-        <h4>Shop</h4>
-        <a href="index.html#shop">All products</a>
-        <a href="index.html#shop">Gift sets</a>
+        <h4>Sklep</h4>
+        <a href="index.html#sklep">Wszystkie produkty</a>
+        <a href="index.html#sklep">Zestawy prezentowe</a>
       </div>
       <div class="foot__col">
-        <h4>Company</h4>
-        <a href="index.html#discretion">How we ship</a>
-        <a href="index.html#materials">Materials</a>
-        <a href="mailto:hello@rosenoir.pl">Contact</a>
+        <h4>O nas</h4>
+        <a href="index.html#wysylka">Jak wysyłamy</a>
+        <a href="index.html#materialy">Materiały</a>
+        <a href="mailto:kontakt@rosenoir.pl">Kontakt</a>
       </div>
       <div class="foot__col">
-        <h4>Legal</h4>
-        <a href="terms.html">Terms of sale</a>
-        <a href="privacy.html">Privacy</a>
-        <a href="returns.html">Returns</a>
-        <a href="age-policy.html">18+ policy</a>
+        <h4>Informacje prawne</h4>
+        <a href="regulamin.html">Regulamin</a>
+        <a href="prywatnosc.html">Polityka prywatności</a>
+        <a href="zwroty.html">Zwroty</a>
+        <a href="polityka-18.html">Polityka 18+</a>
       </div>
     </div>
     <div class="foot__bar">
@@ -148,10 +148,10 @@
 </footer>
 
 <div class="drawer-scrim" id="cartScrim"></div>
-<aside class="drawer" id="cartDrawer" aria-hidden="true" aria-label="Cart">
+<aside class="drawer" id="cartDrawer" aria-hidden="true" aria-label="Koszyk">
   <div class="drawer__head">
-    <h2>Cart</h2>
-    <button class="btn btn--ghost" id="cartClose" type="button">Close</button>
+    <h2>Koszyk</h2>
+    <button class="btn btn--ghost" id="cartClose" type="button">Zamknij</button>
   </div>
   <div class="drawer__body" id="cartBody"></div>
   <div class="drawer__foot" id="cartFoot"></div>
@@ -169,9 +169,9 @@
   if (!product) {
     main.innerHTML =
       '<div class="missing">' +
-        '<h1>We can’t find that product</h1>' +
-        '<p>The link may be out of date, or the item may have been retired from the catalogue.</p>' +
-        '<a class="btn btn--primary" href="index.html#shop">Back to the catalogue</a>' +
+        '<h1>Nie możemy znaleźć tego produktu</h1>' +
+        '<p>Link może być nieaktualny albo produkt został wycofany z oferty.</p>' +
+        '<a class="btn btn--primary" href="index.html#sklep">Wróć do katalogu</a>' +
       '</div>';
     return;
   }
@@ -189,7 +189,7 @@
   var related = CATALOG.filter(function (p) {
     return p.cat === product.cat && p.id !== product.id;
   }).slice(0, 4);
-  /* top up from the wider catalogue if the category is thin */
+  /* dopełnij z szerszego katalogu, jeśli kategoria jest uboga */
   if (related.length < 4) {
     CATALOG.forEach(function (p) {
       if (related.length < 4 && p.id !== product.id && related.indexOf(p) === -1) related.push(p);
@@ -197,15 +197,15 @@
   }
 
   main.innerHTML =
-    '<nav class="crumbs"><a href="index.html">Home</a> / <a href="index.html#shop">' + esc(catLabel(product.cat)) + '</a> / ' + esc(product.name) + '</nav>' +
+    '<nav class="crumbs"><a href="index.html">Sklep</a> / <a href="index.html#sklep">' + esc(catLabel(product.cat)) + '</a> / ' + esc(product.name) + '</nav>' +
 
     '<div class="detail">' +
       '<div class="gallery">' +
         '<div class="gallery__main">' + mediaInner(product) + '</div>' +
         '<div class="gallery__row">' +
-          '<div class="gallery__thumb">Detail</div>' +
-          '<div class="gallery__thumb">In hand</div>' +
-          '<div class="gallery__thumb">Packaging</div>' +
+          '<div class="gallery__thumb">Detal</div>' +
+          '<div class="gallery__thumb">W dłoni</div>' +
+          '<div class="gallery__thumb">Opakowanie</div>' +
         '</div>' +
       '</div>' +
 
@@ -214,41 +214,41 @@
         '<h1>' + esc(product.name) + (product.tag ? ' <span class="tag">' + esc(product.tag) + '</span>' : '') + '</h1>' +
         '<div class="buy__price">' + esc(zl(product.price)) + '</div>' +
         '<p class="buy__ship">' +
-          (freeShip ? 'Free delivery' : 'Delivery 19 zł, free over ' + esc(zl(Cart.freeFrom))) +
-          ' &middot; dispatched within 24h' +
+          (freeShip ? 'Darmowa dostawa' : 'Dostawa 19 zł, darmowa od ' + esc(zl(Cart.freeFrom))) +
+          ' &middot; wysyłamy w ciągu 24 h' +
         '</p>' +
         '<p class="buy__blurb">' + esc(product.blurb) + '</p>' +
 
         '<div class="buy__actions">' +
-          '<button class="btn btn--primary" type="button" data-add="' + esc(product.id) + '">Add to cart</button>' +
-          '<a class="btn" href="index.html#shop">Keep browsing</a>' +
+          '<button class="btn btn--primary" type="button" data-add="' + esc(product.id) + '">Do koszyka</button>' +
+          '<a class="btn" href="index.html#sklep">Wróć do katalogu</a>' +
         '</div>' +
 
         '<dl class="kv">' + specRows + '</dl>' +
 
         '<div class="reassure">' +
-          '<div><span class="dot"></span><span>Ships in a plain, unbranded box with no indication of contents.</span></div>' +
-          '<div><span class="dot"></span><span>Your statement shows a neutral trading name.</span></div>' +
-          '<div><span class="dot"></span><span><strong style="color:var(--text)">Care:</strong> ' + esc(product.care) + '</span></div>' +
+          '<div><span class="dot"></span><span>Wysyłamy w zwykłym kartonie bez oznaczeń, bez żadnej wskazówki co do zawartości.</span></div>' +
+          '<div><span class="dot"></span><span>Na wyciągu bankowym widnieje neutralna nazwa.</span></div>' +
+          '<div><span class="dot"></span><span><strong style="color:var(--text)">Pielęgnacja:</strong> ' + esc(product.care) + '</span></div>' +
         '</div>' +
 
         '<p style="font-size:var(--t-xs);color:var(--text-faint);margin-top:1.25rem">' +
-          'For hygiene reasons, sealed intimate items cannot be returned once opened. ' +
-          '<a href="returns.html" style="color:var(--accent-text);text-decoration:underline">See returns</a>.' +
+          'Z powodów higienicznych zapieczętowanych produktów intymnych nie można zwrócić po otwarciu. ' +
+          '<a href="zwroty.html" style="color:var(--accent-text);text-decoration:underline">Zobacz zasady zwrotów</a>.' +
         '</p>' +
       '</div>' +
     '</div>' +
 
     '<section class="section">' +
-      '<div class="section__head"><h2>Goes with this</h2></div>' +
+      '<div class="section__head"><h2>Pasuje do tego</h2></div>' +
       '<div class="rel">' +
         related.map(function (p) {
           return '<article class="card">' +
-            '<a class="card__media" href="product.html?id=' + encodeURIComponent(p.id) + '" aria-label="' + esc(p.name) + '">' + mediaInner(p) + '</a>' +
+            '<a class="card__media" href="produkt.html?id=' + encodeURIComponent(p.id) + '" aria-label="' + esc(p.name) + '">' + mediaInner(p) + '</a>' +
             '<span class="card__cat">' + esc(catLabel(p.cat)) + '</span>' +
-            '<a class="card__name" href="product.html?id=' + encodeURIComponent(p.id) + '">' + esc(p.name) + '</a>' +
+            '<a class="card__name" href="produkt.html?id=' + encodeURIComponent(p.id) + '">' + esc(p.name) + '</a>' +
             '<div class="card__meta"><span class="card__price">' + esc(zl(p.price)) + '</span></div>' +
-            '<button class="btn btn--block" type="button" data-add="' + esc(p.id) + '">Add to cart</button>' +
+            '<button class="btn btn--block" type="button" data-add="' + esc(p.id) + '">Do koszyka</button>' +
           '</article>';
         }).join('') +
       '</div>' +
