@@ -1,0 +1,609 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rose Noir — Objects of Desire, Refined</title>
+<meta name="description" content="Rose Noir is a premium boudoir house — silk, restraint, and instruments of pleasure, delivered in absolute discretion.">
+<meta name="theme-color" content="#140609">
+<meta property="og:title" content="Rose Noir — Objects of Desire, Refined">
+<meta property="og:description" content="A premium boudoir house. Discreet, considered, and quietly indulgent.">
+<meta property="og:type" content="website">
+<!--
+  Rose Noir — single-page boudoir landing.
+  Deliberately committed to one dark visual world (a boudoir after dark);
+  a light theme would be a different product, so this page is dark-only by design.
+  Fully self-contained: no external fonts, scripts, images, or trackers.
+  Newsletter form is wired for Netlify Forms out of the box (data-netlify);
+  on any other host it degrades to the client-side success state only.
+-->
+<style>
+  :root {
+    color-scheme: dark;
+
+    /* Warm, layered noir palette — chosen, not a default black + one pop */
+    --noir:        #140609;
+    --noir-raised: #1E0A11;
+    --noir-veil:   rgba(10,4,6,0.72);
+    --oxblood:     #3D0A18;
+    --wine:        #7A1330;
+    --rose:        #D9A5AD;
+    --rose-soft:   #C98B96;
+    --champagne:   #C6A06B;
+    --champagne-dim: rgba(198,160,107,0.28);
+    --bone:        #EFE6DE;
+    --bone-dim:    rgba(239,230,222,0.60);
+    --bone-faint:  rgba(239,230,222,0.34);
+    --hairline:    rgba(198,160,107,0.22);
+
+    --font-display: 'Didot', 'Bodoni 72', 'Bodoni MT', 'Playfair Display', 'Times New Roman', Georgia, serif;
+    --font-sans: 'Avenir Next', 'Avenir', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+    --measure: 62ch;
+    --pad-x: clamp(1.25rem, 5vw, 6rem);
+    --maxw: 1240px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+  body {
+    margin: 0;
+    background: var(--noir);
+    color: var(--bone);
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  /* Fine film grain so large dark fields read as material, not flat pixels */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9;
+    opacity: 0.05;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  ::selection { background: var(--wine); color: var(--bone); }
+
+  a { color: inherit; text-decoration: none; }
+
+  :focus-visible {
+    outline: 1.5px solid var(--champagne);
+    outline-offset: 3px;
+  }
+
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 400; margin: 0; text-wrap: balance; letter-spacing: 0.01em; }
+
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
+    color: var(--champagne);
+    font-weight: 600;
+  }
+
+  .shell { max-width: var(--maxw); margin: 0 auto; padding-inline: var(--pad-x); }
+
+  /* ---------------- Age gate ---------------- */
+  .gate {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: grid;
+    place-items: center;
+    padding: 2rem;
+    background: radial-gradient(120% 120% at 50% 20%, #2A0A14 0%, var(--noir) 62%);
+    text-align: center;
+    transition: opacity 0.9s ease, visibility 0.9s ease;
+  }
+  .gate[hidden] { display: grid; }          /* keep layout while fading */
+  .gate.is-open { opacity: 0; visibility: hidden; pointer-events: none; }
+  .gate__inner { max-width: 30rem; }
+  .gate__mark { font-family: var(--font-display); font-size: clamp(2.4rem, 8vw, 4rem); line-height: 1; }
+  .gate__rule { width: 46px; height: 1px; background: var(--champagne); margin: 1.6rem auto; opacity: 0.7; }
+  .gate p { color: var(--bone-dim); font-size: 0.95rem; margin: 0 auto 2rem; max-width: 24rem; }
+  .gate__row { display: flex; gap: 0.9rem; justify-content: center; flex-wrap: wrap; }
+  .gate__leave { color: var(--bone-faint); align-self: center; font-size: 0.85rem; letter-spacing: 0.04em; }
+  .gate__leave:hover { color: var(--bone-dim); }
+
+  /* ---------------- Buttons ---------------- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding: 1rem 1.9rem;
+    border: 1px solid var(--champagne);
+    color: var(--bone);
+    background: transparent;
+    cursor: pointer;
+    transition: background 0.5s ease, color 0.5s ease, letter-spacing 0.5s ease;
+  }
+  .btn:hover { background: var(--champagne); color: #1A0509; letter-spacing: 0.26em; }
+  .btn--solid { background: var(--wine); border-color: var(--wine); }
+  .btn--solid:hover { background: var(--champagne); border-color: var(--champagne); }
+
+  /* ---------------- Nav ---------------- */
+  .nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem var(--pad-x);
+    transition: padding 0.5s ease, background 0.5s ease, border-color 0.5s ease;
+    border-bottom: 1px solid transparent;
+  }
+  .nav.is-stuck {
+    padding-block: 0.9rem;
+    background: var(--noir-veil);
+    backdrop-filter: blur(14px);
+    border-bottom-color: var(--hairline);
+  }
+  .nav__mark { font-family: var(--font-display); font-size: 1.5rem; letter-spacing: 0.04em; }
+  .nav__mark span { color: var(--rose); }
+  .nav__links { display: flex; gap: 2.2rem; align-items: center; }
+  .nav__links a {
+    font-size: 0.72rem; letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--bone-dim); transition: color 0.4s ease;
+  }
+  .nav__links a:hover { color: var(--bone); }
+  .nav__cta { color: var(--champagne) !important; }
+  @media (max-width: 760px) { .nav__links a:not(.nav__cta) { display: none; } }
+
+  /* ---------------- Hero ---------------- */
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: grid;
+    align-items: center;
+    overflow: hidden;
+  }
+  #silk {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    display: block;
+  }
+  .hero::after {   /* vignette to seat the type */
+    content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background:
+      radial-gradient(90% 70% at 50% 42%, transparent 40%, rgba(10,4,6,0.55) 100%),
+      linear-gradient(to bottom, rgba(10,4,6,0.4), transparent 22%, transparent 68%, var(--noir) 100%);
+  }
+  .hero__content { position: relative; z-index: 2; text-align: center; padding-block: 8rem 4rem; }
+  .hero__eyebrow { display: inline-block; margin-bottom: 2.2rem; }
+  .hero__title {
+    font-size: clamp(3.6rem, 15vw, 11rem);
+    line-height: 0.9;
+    letter-spacing: 0.005em;
+  }
+  .hero__title .noir { display: block; color: var(--rose); font-style: italic; }
+  .hero__rule { width: 64px; height: 1px; background: var(--champagne); margin: 2.4rem auto; opacity: 0.75; }
+  .hero__thesis {
+    max-width: 34ch; margin: 0 auto 2.8rem;
+    font-size: clamp(1.05rem, 2.4vw, 1.3rem);
+    color: var(--bone-dim);
+    font-style: italic;
+    font-family: var(--font-display);
+    line-height: 1.5;
+  }
+  .hero__scroll {
+    position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+    z-index: 2; font-size: 0.62rem; letter-spacing: 0.34em; text-transform: uppercase;
+    color: var(--bone-faint); display: flex; flex-direction: column; align-items: center; gap: 0.7rem;
+  }
+  .hero__scroll::after { content: ""; width: 1px; height: 42px; background: linear-gradient(var(--champagne), transparent); animation: drop 2.4s ease-in-out infinite; }
+  @keyframes drop { 0%,100% { opacity: 0.3; transform: scaleY(0.6); transform-origin: top; } 50% { opacity: 1; transform: scaleY(1); } }
+  @media (prefers-reduced-motion: reduce) { .hero__scroll::after { animation: none; } }
+
+  /* ---------------- Reveal on scroll ---------------- */
+  .reveal { opacity: 0; transform: translateY(26px); transition: opacity 1s ease, transform 1s cubic-bezier(0.2,0.7,0.2,1); }
+  .reveal.is-in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
+
+  /* ---------------- Sections ---------------- */
+  section { position: relative; }
+  .band { padding-block: clamp(5rem, 12vw, 9rem); }
+
+  .manifesto { text-align: center; }
+  .manifesto h2 {
+    font-size: clamp(1.8rem, 5vw, 3.2rem);
+    line-height: 1.18;
+    max-width: 20ch;
+    margin: 1.6rem auto 0;
+  }
+  .manifesto h2 em { color: var(--rose); font-style: italic; }
+
+  .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 3.2rem; }
+  .section-head h2 { font-size: clamp(2rem, 5vw, 3.4rem); }
+  .section-head p { color: var(--bone-dim); max-width: 32ch; font-size: 0.95rem; }
+
+  /* Collections grid */
+  .collections { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--hairline); border: 1px solid var(--hairline); }
+  @media (max-width: 900px) { .collections { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .collections { grid-template-columns: 1fr; } }
+  .col {
+    position: relative;
+    background: var(--noir);
+    padding: 2.6rem 2rem 2.4rem;
+    min-height: 300px;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    overflow: hidden;
+    transition: background 0.6s ease;
+  }
+  .col::before {  /* ambient glow that warms on hover */
+    content: ""; position: absolute; inset: 0; opacity: 0; transition: opacity 0.7s ease;
+    background: radial-gradient(120% 90% at 30% 0%, rgba(122,19,48,0.55), transparent 70%);
+  }
+  .col:hover { background: var(--noir-raised); }
+  .col:hover::before { opacity: 1; }
+  .col__no { position: relative; font-size: 0.7rem; letter-spacing: 0.3em; color: var(--champagne); margin-bottom: auto; }
+  .col__name { position: relative; font-family: var(--font-display); font-size: 1.9rem; line-height: 1.1; margin-bottom: 0.6rem; }
+  .col__desc { position: relative; color: var(--bone-dim); font-size: 0.9rem; line-height: 1.55; }
+  .col__link { position: relative; margin-top: 1.4rem; font-size: 0.68rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--bone-faint); display: inline-flex; gap: 0.5rem; transition: color 0.4s ease, gap 0.4s ease; }
+  .col:hover .col__link { color: var(--rose); gap: 0.9rem; }
+
+  /* Promise */
+  .promise { background: linear-gradient(180deg, var(--noir) 0%, #190711 100%); }
+  .promise__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; margin-top: 3rem; }
+  @media (max-width: 780px) { .promise__grid { grid-template-columns: 1fr; gap: 2.8rem; } }
+  .promise__item { border-top: 1px solid var(--hairline); padding-top: 1.6rem; }
+  .promise__item h3 { font-size: 1.5rem; margin-bottom: 0.7rem; }
+  .promise__item p { color: var(--bone-dim); font-size: 0.92rem; }
+
+  /* Editorial quote */
+  .quote { text-align: center; }
+  .quote blockquote {
+    margin: 0 auto; max-width: 24ch;
+    font-family: var(--font-display); font-style: italic;
+    font-size: clamp(2rem, 6vw, 4rem); line-height: 1.14; color: var(--bone);
+  }
+  .quote cite { display: block; margin-top: 2rem; font-family: var(--font-sans); font-style: normal; font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--champagne); }
+
+  /* Newsletter */
+  .circle { text-align: center; }
+  .circle h2 { font-size: clamp(2rem, 5.5vw, 3.6rem); margin-bottom: 1rem; }
+  .circle p { color: var(--bone-dim); max-width: 40ch; margin: 0 auto 2.4rem; }
+  .form { display: flex; gap: 0.75rem; max-width: 30rem; margin: 0 auto; }
+  @media (max-width: 480px) { .form { flex-direction: column; } }
+  .form input {
+    flex: 1; background: transparent; border: 1px solid var(--hairline); color: var(--bone);
+    padding: 1rem 1.2rem; font-family: var(--font-sans); font-size: 0.9rem; letter-spacing: 0.04em;
+    transition: border-color 0.4s ease;
+  }
+  .form input::placeholder { color: var(--bone-faint); letter-spacing: 0.1em; text-transform: uppercase; font-size: 0.72rem; }
+  .form input:focus { outline: none; border-color: var(--champagne); }
+  .form__note { margin-top: 1.4rem; font-size: 0.72rem; color: var(--bone-faint); letter-spacing: 0.06em; }
+  .form.is-done .form__fields { display: none; }
+  .form__success { display: none; color: var(--rose); font-family: var(--font-display); font-style: italic; font-size: 1.3rem; }
+
+  /* ---------------- Footer ---------------- */
+  footer { border-top: 1px solid var(--hairline); padding-block: 4rem 3rem; }
+  .foot__top { display: flex; justify-content: space-between; gap: 2rem; flex-wrap: wrap; margin-bottom: 3rem; }
+  .foot__mark { font-family: var(--font-display); font-size: 2rem; }
+  .foot__mark span { color: var(--rose); }
+  .foot__cols { display: flex; gap: 4rem; flex-wrap: wrap; }
+  .foot__col h4 { font-size: 0.68rem; letter-spacing: 0.26em; text-transform: uppercase; color: var(--champagne); margin: 0 0 1rem; font-family: var(--font-sans); font-weight: 600; }
+  .foot__col a { display: block; color: var(--bone-dim); font-size: 0.88rem; margin-bottom: 0.6rem; transition: color 0.4s ease; }
+  .foot__col a:hover { color: var(--bone); }
+  .foot__bottom { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; align-items: center; font-size: 0.75rem; color: var(--bone-faint); letter-spacing: 0.04em; }
+  .foot__badge { border: 1px solid var(--hairline); padding: 0.35rem 0.7rem; letter-spacing: 0.2em; font-weight: 600; color: var(--bone-dim); }
+</style>
+</head>
+<body>
+
+  <!-- ================= AGE GATE ================= -->
+  <div class="gate" id="gate" role="dialog" aria-modal="true" aria-label="Age verification">
+    <div class="gate__inner">
+      <div class="gate__mark">Rose <span style="color:var(--rose)">Noir</span></div>
+      <div class="gate__rule"></div>
+      <p>This is a house for adults. By entering, you confirm that you are <strong>18 years or older</strong> and welcome material of a sensual nature.</p>
+      <div class="gate__row">
+        <button class="btn btn--solid" id="gateEnter">Enter the house</button>
+        <a class="gate__leave" href="https://www.google.com">I&rsquo;m not 18</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= NAV ================= -->
+  <nav class="nav" id="nav">
+    <a class="nav__mark" href="#top">Rose <span>Noir</span></a>
+    <div class="nav__links">
+      <a href="#collections">Collections</a>
+      <a href="#discretion">Discretion</a>
+      <a href="#house">The House</a>
+      <a class="nav__cta" href="#circle">Inner Circle</a>
+    </div>
+  </nav>
+
+  <span id="top"></span>
+
+  <!-- ================= HERO ================= -->
+  <header class="hero">
+    <canvas id="silk" aria-hidden="true"></canvas>
+    <div class="hero__content shell">
+      <span class="eyebrow hero__eyebrow">Warsaw &middot; Est. MMXXV</span>
+      <h1 class="hero__title">Rose<span class="noir">Noir</span></h1>
+      <div class="hero__rule"></div>
+      <p class="hero__thesis">Desire deserves better than a plastic aisle. A boudoir house of silk, restraint, and quiet indulgence.</p>
+      <a class="btn" href="#collections">Explore the collections</a>
+    </div>
+    <div class="hero__scroll">Scroll</div>
+  </header>
+
+  <!-- ================= MANIFESTO ================= -->
+  <section class="band manifesto reveal">
+    <div class="shell">
+      <span class="eyebrow">The premise</span>
+      <h2>Pleasure, treated as a <em>craft</em> — not a punchline.</h2>
+    </div>
+  </section>
+
+  <!-- ================= COLLECTIONS ================= -->
+  <section class="band" id="collections">
+    <div class="shell">
+      <div class="section-head reveal">
+        <h2>The Collections</h2>
+        <p>Six worlds, each vetted for material, feel, and finish. Nothing loud. Everything considered.</p>
+      </div>
+      <div class="collections reveal">
+        <article class="col">
+          <span class="col__no">I</span>
+          <h3 class="col__name">Le Boudoir</h3>
+          <p class="col__desc">Silk, lace, and the slow art of undress.</p>
+          <span class="col__link">Discover &rarr;</span>
+        </article>
+        <article class="col">
+          <span class="col__no">II</span>
+          <h3 class="col__name">Objets du D&eacute;sir</h3>
+          <p class="col__desc">Refined instruments of pleasure, in glass, gold, and body-safe silicone.</p>
+          <span class="col__link">Discover &rarr;</span>
+        </article>
+        <article class="col">
+          <span class="col__no">III</span>
+          <h3 class="col__name">Cuir &amp; Soie</h3>
+          <p class="col__desc">Leather and restraint, with softness kept close at hand.</p>
+          <span class="col__link">Discover &rarr;</span>
+        </article>
+        <article class="col">
+          <span class="col__no">IV</span>
+          <h3 class="col__name">&Eacute;lixirs</h3>
+          <p class="col__desc">Oils, candles, and scent — for the skin, and the room.</p>
+          <span class="col__link">Discover &rarr;</span>
+        </article>
+        <article class="col">
+          <span class="col__no">V</span>
+          <h3 class="col__name">Pour Deux</h3>
+          <p class="col__desc">Curated for two. An evening, rather than an object.</p>
+          <span class="col__link">Discover &rarr;</span>
+        </article>
+        <article class="col">
+          <span class="col__no">VI</span>
+          <h3 class="col__name">Le Coffret Myst&egrave;re</h3>
+          <p class="col__desc">A monthly coffret, chosen for you. Unmarked, always.</p>
+          <span class="col__link">Subscribe &rarr;</span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= DISCRETION ================= -->
+  <section class="band promise" id="discretion">
+    <div class="shell">
+      <div class="section-head reveal">
+        <h2>Discretion is the <em style="color:var(--rose);font-style:italic">luxury</em>.</h2>
+        <p>The most important thing we sell, you will never see on the box.</p>
+      </div>
+      <div class="promise__grid reveal">
+        <div class="promise__item">
+          <h3>Absolute discretion</h3>
+          <p>Plain, unbranded packaging. No logos, no hints, no clue to the contents. Ever.</p>
+        </div>
+        <div class="promise__item">
+          <h3>Delivered in silence</h3>
+          <p>Neutral billing descriptor and an unmarked courier. Warsaw same-day; Poland in 24&ndash;48h.</p>
+        </div>
+        <div class="promise__item">
+          <h3>Curated, not crowded</h3>
+          <p>Every piece is vetted for quality and body-safe materials. A short list, not an endless shelf.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= QUOTE / HOUSE ================= -->
+  <section class="band quote reveal" id="house">
+    <div class="shell">
+      <blockquote>&ldquo;Sensuality, given the room to be beautiful.&rdquo;</blockquote>
+      <cite>&mdash; The Rose Noir House</cite>
+    </div>
+  </section>
+
+  <!-- ================= INNER CIRCLE ================= -->
+  <section class="band circle reveal" id="circle">
+    <div class="shell">
+      <span class="eyebrow">By invitation</span>
+      <h2>The Inner Circle</h2>
+      <p>First access to new arrivals, private sales, and nothing you didn&rsquo;t ask for. Unsubscribe in one tap.</p>
+      <form class="form" id="circleForm" name="inner-circle" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="inner-circle">
+        <p hidden><label>Leave blank <input name="bot-field"></label></p>
+        <div class="form__fields" style="display:flex;gap:0.75rem;flex:1;width:100%">
+          <input type="email" name="email" placeholder="Your email" required aria-label="Your email">
+          <button class="btn btn--solid" type="submit">Enter</button>
+        </div>
+        <span class="form__success" id="formSuccess">Welcome to the Inner Circle.</span>
+      </form>
+      <p class="form__note">18+ only. We keep your address to ourselves — see our Privacy note below.</p>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer>
+    <div class="shell">
+      <div class="foot__top">
+        <div>
+          <div class="foot__mark">Rose <span>Noir</span></div>
+          <p style="color:var(--bone-faint);max-width:26ch;margin:0.8rem 0 0;font-size:0.85rem">A premium boudoir house. Warsaw, Poland.</p>
+        </div>
+        <div class="foot__cols">
+          <div class="foot__col">
+            <h4>Shop</h4>
+            <a href="#collections">Le Boudoir</a>
+            <a href="#collections">Objets du D&eacute;sir</a>
+            <a href="#collections">Cuir &amp; Soie</a>
+            <a href="#collections">&Eacute;lixirs</a>
+          </div>
+          <div class="foot__col">
+            <h4>The House</h4>
+            <a href="#discretion">Discretion</a>
+            <a href="#house">Our promise</a>
+            <a href="#circle">Inner Circle</a>
+            <a href="mailto:hello@rosenoir.pl">Contact</a>
+          </div>
+          <div class="foot__col">
+            <h4>Legal</h4>
+            <a href="#">Terms of Sale</a>
+            <a href="#">Privacy</a>
+            <a href="#">Shipping &amp; Returns</a>
+            <a href="#">18+ Policy</a>
+          </div>
+        </div>
+      </div>
+      <div class="foot__bottom">
+        <span>&copy; <span id="year">2025</span> Rose Noir. All rights reserved.</span>
+        <span class="foot__badge">18+ ONLY</span>
+      </div>
+    </div>
+  </footer>
+
+<script>
+(function () {
+  "use strict";
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- Age gate ---------- */
+  var gate = document.getElementById("gate");
+  var passed = false;
+  try { passed = sessionStorage.getItem("rn_age_ok") === "1"; } catch (e) {}
+  if (passed) {
+    gate.classList.add("is-open");
+    document.body.style.overflow = "";
+  } else {
+    document.body.style.overflow = "hidden";
+  }
+  document.getElementById("gateEnter").addEventListener("click", function () {
+    try { sessionStorage.setItem("rn_age_ok", "1"); } catch (e) {}
+    gate.classList.add("is-open");
+    document.body.style.overflow = "";
+  });
+
+  /* ---------- Year ---------- */
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  /* ---------- Nav shrink ---------- */
+  var nav = document.getElementById("nav");
+  function onScroll() { nav.classList.toggle("is-stuck", window.scrollY > 40); }
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
+
+  /* ---------- Scroll reveals ---------- */
+  var reveals = document.querySelectorAll(".reveal");
+  if ("IntersectionObserver" in window && !reduced) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add("is-in"); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.16 });
+    reveals.forEach(function (el) { io.observe(el); });
+  } else {
+    reveals.forEach(function (el) { el.classList.add("is-in"); });
+  }
+
+  /* ---------- Newsletter (client-side confirm; Netlify captures on submit) ---------- */
+  var form = document.getElementById("circleForm");
+  form.addEventListener("submit", function (e) {
+    var host = location.hostname;
+    var onNetlify = /netlify\.app$/.test(host);
+    if (!onNetlify) {
+      // No form backend on this host — confirm client-side instead of erroring.
+      e.preventDefault();
+    }
+    form.classList.add("is-done");
+    document.getElementById("formSuccess").style.display = "block";
+  });
+
+  /* ---------- Ambient "black silk" hero ---------- */
+  var canvas = document.getElementById("silk");
+  var ctx = canvas.getContext("2d");
+  var W, H, dpr;
+  var blobs = [
+    { hue: "#7A1330", x: 0.32, y: 0.40, r: 0.55, ax: 0.06, ay: 0.05, sx: 0.00021, sy: 0.00017, p: 0 },
+    { hue: "#3D0A18", x: 0.66, y: 0.55, r: 0.62, ax: 0.08, ay: 0.06, sx: 0.00015, sy: 0.00023, p: 2 },
+    { hue: "#B15C6E", x: 0.52, y: 0.30, r: 0.34, ax: 0.05, ay: 0.07, sx: 0.00027, sy: 0.00013, p: 4 },
+    { hue: "#2A0712", x: 0.44, y: 0.70, r: 0.5,  ax: 0.07, ay: 0.05, sx: 0.00019, sy: 0.00021, p: 1 }
+  ];
+
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var rect = canvas.getBoundingClientRect();
+    W = rect.width; H = rect.height;
+    canvas.width = Math.floor(W * dpr);
+    canvas.height = Math.floor(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  resize();
+  window.addEventListener("resize", resize);
+
+  function draw(t) {
+    ctx.globalCompositeOperation = "source-over";
+    ctx.fillStyle = "#140609";
+    ctx.fillRect(0, 0, W, H);
+    ctx.globalCompositeOperation = "lighter";
+    for (var i = 0; i < blobs.length; i++) {
+      var b = blobs[i];
+      var cx = (b.x + Math.sin(t * b.sx + b.p) * b.ax) * W;
+      var cy = (b.y + Math.cos(t * b.sy + b.p) * b.ay) * H;
+      var rad = b.r * Math.min(W, H);
+      var g = ctx.createRadialGradient(cx, cy, 0, cx, cy, rad);
+      g.addColorStop(0, b.hue);
+      g.addColorStop(1, "rgba(20,6,9,0)");
+      ctx.globalAlpha = 0.42;
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(cx, cy, rad, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  if (reduced) {
+    draw(0);
+  } else {
+    var start = performance.now();
+    (function loop(now) {
+      draw(now - start);
+      requestAnimationFrame(loop);
+    })(start);
+  }
+})();
+</script>
+</body>
+</html>
