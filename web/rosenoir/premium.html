@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rose Noir — Premium</title>
+<meta name="description" content="Rose Noir Premium.">
+<meta name="theme-color" content="#050505">
+<link rel="stylesheet" href="premium-bg.css">
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: #050505;
+    color: #EDE7E2;
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  :focus-visible { outline: 1px solid #C6A06B; outline-offset: 4px; }
+
+  .shell { max-width: 1140px; margin: 0 auto; padding-inline: clamp(1.25rem, 5vw, 4rem); }
+
+  header {
+    position: sticky; top: 0; z-index: 20;
+    background: rgba(5, 5, 5, 0.72);
+    backdrop-filter: blur(18px);
+    border-bottom: 1px solid rgba(198, 160, 107, 0.10);
+  }
+  .bar { display: flex; align-items: center; gap: 2rem; height: 60px; }
+  .mark { font-size: 15px; letter-spacing: 0.24em; text-transform: uppercase; font-weight: 500; }
+  .mark span { color: rgba(237, 231, 226, 0.42); }
+  nav { display: flex; gap: 1.75rem; margin-left: auto; }
+  nav a { font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(237, 231, 226, 0.5); transition: color .4s ease; }
+  nav a:hover { color: #EDE7E2; }
+  @media (max-width: 700px) { nav { display: none; } }
+
+  .hero { min-height: 88vh; display: grid; align-content: center; padding-block: 6rem 4rem; }
+  .eyebrow {
+    font-size: 11px; letter-spacing: 0.42em; text-transform: uppercase;
+    color: #C6A06B; margin-bottom: 2rem;
+  }
+  h1 {
+    font-size: clamp(2.8rem, 8vw, 6.5rem);
+    line-height: 0.98;
+    letter-spacing: -0.035em;
+    font-weight: 300;
+    margin: 0 0 1.75rem;
+    max-width: 15ch;
+  }
+  h1 em { font-style: italic; color: #C99CA8; }
+  .lede {
+    font-size: clamp(1rem, 1.6vw, 1.2rem);
+    color: rgba(237, 231, 226, 0.55);
+    max-width: 46ch;
+    margin: 0 0 2.75rem;
+  }
+  .cta { display: flex; gap: 0.9rem; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center;
+    font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 500;
+    padding: 1rem 2rem;
+    border: 1px solid rgba(198, 160, 107, 0.4);
+    color: #EDE7E2;
+    background: transparent;
+    cursor: pointer;
+    transition: background .5s ease, border-color .5s ease, color .5s ease;
+  }
+  .btn:hover { background: rgba(198, 160, 107, 0.10); border-color: #C6A06B; }
+  .btn--solid { background: #C6A06B; border-color: #C6A06B; color: #140A06; }
+  .btn--solid:hover { background: #D4B27F; border-color: #D4B27F; color: #140A06; }
+
+  section.band { padding-block: clamp(4rem, 10vw, 8rem); border-top: 1px solid rgba(198, 160, 107, 0.09); }
+  h2 { font-size: clamp(1.6rem, 3.4vw, 2.6rem); font-weight: 300; letter-spacing: -0.02em; margin: 0 0 0.75rem; }
+  .band p { color: rgba(237, 231, 226, 0.5); max-width: 52ch; margin: 0; }
+
+  .cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2.5rem; margin-top: 3.5rem; }
+  @media (max-width: 820px) { .cols { grid-template-columns: minmax(0, 1fr); gap: 2.25rem; } }
+  .col h3 { font-size: 1.05rem; font-weight: 400; margin: 0 0 0.5rem; }
+  .col p { font-size: 0.92rem; }
+  .col .num { display: block; font-size: 11px; letter-spacing: 0.28em; color: rgba(198, 160, 107, 0.75); margin-bottom: 1rem; }
+
+  footer { padding-block: 3rem 4rem; border-top: 1px solid rgba(198, 160, 107, 0.09); }
+  .foot { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; font-size: 12px; color: rgba(237, 231, 226, 0.3); letter-spacing: 0.06em; }
+
+  .hint {
+    position: fixed; left: 50%; bottom: 1.5rem; transform: translateX(-50%);
+    z-index: 30; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(237, 231, 226, 0.26); pointer-events: none; text-align: center;
+  }
+  @media (pointer: coarse) { .hint { display: none; } }
+</style>
+</head>
+<body>
+
+<div class="pbg-content">
+  <header>
+    <div class="shell bar">
+      <a class="mark" href="index.html">Rose <span>Noir</span></a>
+      <nav>
+        <a href="index.html#sklep">Sklep</a>
+        <a href="index.html#wysylka">Wysyłka</a>
+        <a href="index.html#materialy">Materiały</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="shell">
+    <div class="hero">
+      <div class="eyebrow">Rose Noir Premium</div>
+      <h1>Zbudowane z jednej bryły <em>obsydianu</em>.</h1>
+      <p class="lede">
+        Powierzchnia reaguje na ruch, jakby światło studyjne przesuwało się po polerowanym
+        kamieniu. Większość odwiedzających tego nie nazwie. Każdy to poczuje.
+      </p>
+      <div class="cta">
+        <a class="btn btn--solid" href="index.html#sklep">Przejrzyj kolekcję</a>
+        <a class="btn" href="index.html#wysylka">Jak wysyłamy</a>
+      </div>
+    </div>
+
+    <section class="band">
+      <h2>Rzemiosło, nie dekoracja</h2>
+      <p>Trzy decyzje, które odróżniają powierzchnię od czarnego tła.</p>
+      <div class="cols">
+        <div class="col">
+          <span class="num">01</span>
+          <h3>Odbicie, nie poświata</h3>
+          <p>Światło ma bardzo duży promień i maksymalnie 6,5% krycia. Nigdy nie robi się białe,
+             nigdy nie zamienia się w latarkę podążającą za kursorem.</p>
+        </div>
+        <div class="col">
+          <span class="num">02</span>
+          <h3>Dwie głębie kamienia</h3>
+          <p>Bliższe odbicie prowadzi, dalsze zostaje w tyle na osobnej sprężynie. Ta różnica
+             czyta się jako grubość materiału.</p>
+        </div>
+        <div class="col">
+          <span class="num">03</span>
+          <h3>Oddech</h3>
+          <p>Gradienty, marmur i winieta przesuwają się w cyklach 28–40 sekund. Ruch jest poniżej
+             progu świadomej uwagi, ale strona nie wygląda na martwą.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="band">
+      <h2>Wydajność</h2>
+      <p>
+        Ruch odbywa się wyłącznie przez <code>translate3d</code>, więc przeglądarka obsługuje go na
+        kompozytorze — bez przeliczania układu i bez przemalowywania. Pętla animacji zatrzymuje się,
+        gdy sprężyna się uspokoi, więc przy nieruchomym kursorze nie zużywa ani jednej klatki.
+        Zero zależności, około 4 kB.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell foot">
+      <span>© <span id="year">2026</span> Rose Noir</span>
+      <span>Warszawa</span>
+    </div>
+  </footer>
+</div>
+
+<div class="hint">Porusz kursorem</div>
+
+<script src="premium-bg.js" defer></script>
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>

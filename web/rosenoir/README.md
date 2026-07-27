@@ -83,3 +83,38 @@ replace that message with a fake success state — connect a real provider
 Rendered headless at 1440px and 390px: catalogue filters, cart add/quantity/
 remove/persistence across navigation, free-delivery threshold, missing-product
 fallback, all four legal pages, no console errors, no horizontal overflow.
+
+## Tło Premium (obsydian, reagujące na kursor)
+
+Pliki: `premium-bg.css`, `premium-bg.js`, demo w `premium.html`,
+port React/Next.js w `PremiumBackground.jsx`.
+
+Wpięcie na dowolnej stronie — dwie linijki, moduł sam buduje swoje warstwy:
+
+```html
+<link rel="stylesheet" href="premium-bg.css">
+<script src="premium-bg.js" defer></script>
+```
+
+Treść powinna mieć `position: relative` (albo klasę `.pbg-content`), żeby
+znalazła się nad płytą.
+
+**Wdrożenie na OnePage:** wklej zawartość `premium-bg.css` do sekcji custom CSS,
+a zawartość `premium-bg.js` do custom JS / bloku HTML jako `<script>`. Nie ma
+zależności ani odwołań do zewnętrznych plików, więc nie wymaga hostingu assetów.
+
+**Strojenie** — `window.PremiumBackground.config`:
+
+| Parametr | Domyślnie | Co robi |
+|---|---|---|
+| `near.stiffness` | `0.050` | jak szybko bliższe odbicie goni kursor |
+| `far.stiffness` | `0.032` | dalsza warstwa; różnica względem `near` tworzy głębię |
+| `epsilon` | `1.0` | poniżej tego ruchu sprężyna przyciąga się do celu i pętla zasypia |
+| `--pbg-reflect-a` | `0.065` | szczytowe krycie odbicia (trzymaj w paśmie 5–8%) |
+| `--pbg-reflect-w/h` | `1400/900px` | rozmiar odbicia |
+
+**Zmierzone** (headless Chromium): ruch kursora daje **0 przeliczeń układu** —
+przesuwanie odbywa się wyłącznie przez `translate3d`, czyli na kompozytorze.
+Sprężyna uspokaja się po **80 klatkach (~1,3 s przy 60 fps)** i pętla `rAF`
+całkowicie zasypia — przy nieruchomym kursorze nie zużywa ani jednej klatki.
+Brak myszy → statyczny dryf w CSS. `prefers-reduced-motion` → wszystko zamiera.

@@ -1,0 +1,198 @@
+/* ==========================================================================
+   Rose Noir — Premium Obsidian Background
+   Polished black stone with a soft studio reflection that tracks the cursor.
+
+   Architecture note: only the reflection layers ever move, and they move via
+   translate3d only. Transform and opacity are compositor-only properties, so
+   pointer tracking costs no layout and no paint — which is why this does not
+   need WebGL and comfortably holds 60fps on integrated graphics.
+
+   Everything here is pointer-events:none and sits behind content.
+   ========================================================================== */
+
+.pbg {
+  --pbg-void:      #050505;
+  --pbg-burgundy:  #18070D;
+  --pbg-wine:      #2A0C16;
+  --pbg-rose:      #8A3A50;
+  --pbg-champagne: #C6A06B;
+  --pbg-graphite:  #16161A;
+
+  /* Reflection geometry. Spec asks for a 500–700px radius; elliptical rather
+     than circular so it reads as light raking across stone, not a torch. */
+  --pbg-reflect-w: 1400px;
+  --pbg-reflect-h: 900px;
+
+  /* Peak alpha stays inside the 5–8% band. Never goes white. */
+  --pbg-reflect-a: 0.065;
+  --pbg-reflect-a2: 0.035;
+
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--pbg-void);
+  contain: strict;
+}
+
+.pbg__layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  will-change: opacity;
+}
+
+/* ---------------------------------------------------------- 2. burgundy bed
+   Two enormous off-centre pools of very dark wine. They breathe on long,
+   mismatched cycles so the surface never repeats visibly. */
+.pbg__wine {
+  background:
+    radial-gradient(120% 90% at 22% 18%, var(--pbg-burgundy) 0%, transparent 62%),
+    radial-gradient(110% 100% at 82% 78%, var(--pbg-wine) 0%, transparent 58%),
+    radial-gradient(140% 120% at 50% 50%, #0C0509 0%, transparent 70%);
+  opacity: 0.9;
+  animation: pbg-breathe-a 34s linear infinite;
+}
+
+/* ------------------------------------------------------------- 3. marble
+   Low-frequency fractal noise — large, soft, cloudlike variation rather than
+   veining. Two passes: broad blotches for depth, a fine tooth for stone grain.
+   Both sit at a few percent and blend rather than overlay flatly. */
+.pbg__marble {
+  background-image: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' width='700' height='700'>\
+<filter id='m'>\
+<feTurbulence type='fractalNoise' baseFrequency='0.011' numOctaves='3' seed='7'/>\
+<feGaussianBlur stdDeviation='6'/>\
+</filter>\
+<rect width='100%25' height='100%25' filter='url(%23m)'/>\
+</svg>");
+  background-size: 1400px 1400px;
+  opacity: 0.055;
+  mix-blend-mode: soft-light;
+  animation: pbg-breathe-b 40s linear infinite;
+}
+
+.pbg__grain {
+  background-image: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'>\
+<filter id='g'>\
+<feTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='2' seed='3'/>\
+</filter>\
+<rect width='100%25' height='100%25' filter='url(%23g)'/>\
+</svg>");
+  background-size: 180px 180px;
+  opacity: 0.022;
+  mix-blend-mode: overlay;
+}
+
+/* ------------------------------------------------------- 4. gloss / sheen
+   A stationary, very faint diagonal sheen — the "piano lacquer" read. It is
+   what makes the moving reflection legible as a reflection rather than a glow. */
+.pbg__sheen {
+  background: linear-gradient(
+    118deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.013) 34%,
+    rgba(198, 160, 107, 0.016) 46%,
+    transparent 62%
+  );
+  animation: pbg-breathe-c 28s linear infinite;
+}
+
+/* -------------------------------------------------- 4b. moving reflections
+   Sized once, positioned once, then only translated. Screen blending adds
+   light instead of washing the stone out. */
+.pbg__reflect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--pbg-reflect-w);
+  height: var(--pbg-reflect-h);
+  margin-left: calc(var(--pbg-reflect-w) / -2);
+  margin-top: calc(var(--pbg-reflect-h) / -2);
+  pointer-events: none;
+  mix-blend-mode: screen;
+  will-change: transform;
+  transform: translate3d(-9999px, -9999px, 0);
+}
+
+/* Near reflection: champagne core bleeding into dark rose. */
+.pbg__reflect--near {
+  background: radial-gradient(
+    50% 50% at 50% 50%,
+    rgba(198, 160, 107, var(--pbg-reflect-a)) 0%,
+    rgba(138, 58, 80, calc(var(--pbg-reflect-a) * 0.55)) 38%,
+    rgba(24, 7, 13, 0) 72%
+  );
+  filter: blur(14px);
+}
+
+/* Far reflection: bigger, fainter, laggier. Reads as a second depth in the
+   stone, which is what stops it looking like a cursor light. */
+.pbg__reflect--far {
+  width: calc(var(--pbg-reflect-w) * 1.5);
+  height: calc(var(--pbg-reflect-h) * 1.45);
+  margin-left: calc(var(--pbg-reflect-w) * -0.75);
+  margin-top: calc(var(--pbg-reflect-h) * -0.725);
+  background: radial-gradient(
+    50% 50% at 50% 50%,
+    rgba(138, 58, 80, var(--pbg-reflect-a2)) 0%,
+    rgba(42, 12, 22, calc(var(--pbg-reflect-a2) * 0.6)) 45%,
+    rgba(5, 5, 5, 0) 74%
+  );
+  filter: blur(30px);
+}
+
+/* ------------------------------------------------------------ 5. vignette
+   Centre stays fractionally lifted, edges fall into true black. Drawn last so
+   it contains every layer above. */
+.pbg__vignette {
+  background:
+    radial-gradient(70% 60% at 50% 42%, rgba(255, 248, 240, 0.022) 0%, transparent 60%),
+    radial-gradient(120% 110% at 50% 50%, transparent 42%, rgba(5, 5, 5, 0.72) 82%, #050505 100%);
+  animation: pbg-breathe-d 36s linear infinite;
+}
+
+/* ------------------------------------------------------------- breathing
+   Sub-perceptual drift. Transform and opacity only — no repaints. */
+@keyframes pbg-breathe-a {
+  0%, 100% { opacity: 0.9;  transform: translate3d(0, 0, 0) scale(1); }
+  50%      { opacity: 1;    transform: translate3d(-1.2%, 0.8%, 0) scale(1.04); }
+}
+@keyframes pbg-breathe-b {
+  0%, 100% { opacity: 0.055; transform: translate3d(0, 0, 0) scale(1); }
+  50%      { opacity: 0.075; transform: translate3d(1%, -1.4%, 0) scale(1.06); }
+}
+@keyframes pbg-breathe-c {
+  0%, 100% { opacity: 0.85; transform: translate3d(0, 0, 0); }
+  50%      { opacity: 1;    transform: translate3d(2.5%, 0, 0); }
+}
+@keyframes pbg-breathe-d {
+  0%, 100% { opacity: 1;    transform: scale(1); }
+  50%      { opacity: 0.94; transform: scale(1.02); }
+}
+
+/* --------------------------------------------------------------- fallbacks
+   No pointer (touch): the reflection parks slightly above centre and simply
+   breathes, so phones get the stone without a stuck highlight. */
+.pbg[data-pointer="none"] .pbg__reflect {
+  animation: pbg-drift 30s ease-in-out infinite alternate;
+}
+@keyframes pbg-drift {
+  from { transform: translate3d(38vw, 34vh, 0); }
+  to   { transform: translate3d(62vw, 52vh, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pbg__wine,
+  .pbg__marble,
+  .pbg__sheen,
+  .pbg__vignette,
+  .pbg[data-pointer="none"] .pbg__reflect { animation: none; }
+  .pbg__reflect { transition: none; }
+}
+
+/* Content sits above the slab. */
+.pbg-content { position: relative; z-index: 1; }
