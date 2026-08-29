@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rose Noir — intymność klasy premium, dostarczona dyskretnie</title>
+<meta name="description" content="Butik erotyczny premium. Materiały bezpieczne dla ciała, nieoznaczone opakowanie, dostawa w 24–48 h na terenie Polski.">
+<meta name="theme-color" content="#0B0B0E">
+<meta property="og:title" content="Rose Noir — intymność klasy premium, dostarczona dyskretnie">
+<meta property="og:description" content="Starannie wybrany katalog, materiały bezpieczne dla ciała, nieoznaczone opakowanie.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pl_PL">
+<link rel="stylesheet" href="style.css">
+<style>
+  /* hero */
+  .hero { border-bottom: 1px solid var(--border); }
+  .hero__inner { padding-block: clamp(2.5rem, 6vw, 4rem); max-width: 46rem; }
+  .hero h1 { font-size: clamp(var(--t-2xl), 6vw, var(--t-4xl)); margin-bottom: 0.9rem; }
+  .hero p { color: var(--text-dim); font-size: var(--t-lg); margin: 0 0 1.75rem; max-width: 36rem; line-height: 1.45; }
+  .hero__cta { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+
+  .trust { display: flex; gap: 2rem; flex-wrap: wrap; padding-block: 1rem; border-top: 1px solid var(--border); }
+  .trust div { display: flex; align-items: center; gap: 0.5rem; font-size: var(--t-sm); color: var(--text-dim); }
+  .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--ok); flex: none; }
+
+  /* pasek filtrów */
+  .toolbar { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; padding-block: 1.25rem; }
+  .chip {
+    font-size: var(--t-sm); color: var(--text-dim);
+    border: 1px solid var(--border); border-radius: var(--r);
+    padding: 0.35rem 0.7rem; background: transparent; cursor: pointer;
+    font-family: inherit;
+    transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+  }
+  .chip:hover { color: var(--text); border-color: var(--border-strong); }
+  .chip[aria-pressed="true"] { color: var(--text); background: var(--accent-quiet); border-color: var(--accent); }
+  .toolbar__count { margin-left: auto; font-size: var(--t-sm); color: var(--text-faint); font-variant-numeric: tabular-nums; }
+
+  /* siatka produktów — osobne karty z obramowaniem, żeby filtrowanie zwijało się czysto */
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; padding-bottom: 1rem; }
+  @media (max-width: 980px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 720px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 460px) { .grid { grid-template-columns: 1fr; } }
+
+  .card {
+    background: var(--bg); padding: 1rem;
+    border: 1px solid var(--border); border-radius: var(--r);
+    display: flex; flex-direction: column; gap: 0.65rem;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+  .card:hover { background: var(--surface); border-color: var(--border-strong); }
+  .card__media {
+    aspect-ratio: 4 / 3; border-radius: var(--r-sm);
+    background: linear-gradient(160deg, var(--surface-2), #101014);
+    border: 1px solid var(--border);
+    display: grid; place-items: center;
+    font-size: var(--t-xs); color: var(--text-faint);
+  }
+  .card__cat { font-size: var(--t-xs); color: var(--text-faint); }
+  .card__name { font-size: var(--t-sm); font-weight: 500; letter-spacing: -0.006em; }
+  .card__meta { display: flex; align-items: baseline; justify-content: space-between; gap: 0.5rem; margin-top: auto; }
+  .card__price { font-size: var(--t-sm); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .card__mat { font-size: var(--t-xs); color: var(--text-dim); text-align: right; }
+  .card__empty { color: var(--text-dim); font-size: var(--t-sm); padding: 2rem 0; }
+</style>
+</head>
+<body>
+
+<div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
+  <div class="gate__card">
+    <h2 id="gateTitle">Potwierdź swój wiek</h2>
+    <p>Rose Noir sprzedaje produkty przeznaczone dla osób dorosłych. Potwierdź, że masz ukończone 18 lat.</p>
+    <div class="gate__row">
+      <button class="btn btn--primary" id="gateEnter">Mam ukończone 18 lat</button>
+      <a class="btn" href="https://www.google.pl">Wychodzę</a>
+    </div>
+  </div>
+</div>
+
+<header class="top">
+  <div class="shell top__inner">
+    <a class="brand" href="index.html">Rose <em>Noir</em></a>
+    <nav>
+      <a href="#sklep" aria-current="page">Sklep</a>
+      <a href="#wysylka">Wysyłka</a>
+      <a href="#materialy">Materiały</a>
+      <a href="zwroty.html">Zwroty</a>
+    </nav>
+    <div class="top__actions">
+      <button class="cart-btn" data-open-cart type="button">Koszyk <b data-cart-count>0</b></button>
+      <button class="btn btn--primary" type="button">Zaloguj się</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="shell">
+    <div class="hero__inner">
+      <h1>Intymność klasy premium. Dostarczona dyskretnie.</h1>
+      <p>Krótki, starannie wybrany katalog. Wyłącznie materiały bezpieczne dla ciała, nieoznaczone opakowanie i dostawa w 24&ndash;48 h na terenie Polski.</p>
+      <div class="hero__cta">
+        <a class="btn btn--primary btn--lg" href="#sklep">Przejrzyj katalog</a>
+        <a class="btn btn--lg" href="#wysylka">Jak wysyłamy</a>
+      </div>
+    </div>
+    <div class="trust">
+      <div><span class="dot"></span> Nieoznaczone opakowanie</div>
+      <div><span class="dot"></span> Neutralny opis na wyciągu</div>
+      <div><span class="dot"></span> Darmowa dostawa od 300 zł</div>
+      <div><span class="dot"></span> Materiały bezpieczne dla ciała</div>
+    </div>
+  </div>
+</section>
+
+<section id="sklep">
+  <div class="shell">
+    <div class="toolbar" id="filters" role="group" aria-label="Filtruj katalog"></div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<section class="section" id="wysylka">
+  <div class="shell">
+    <div class="section__head">
+      <h2>Jak wysyłamy</h2>
+      <p>Rzeczy, które mają tu największe znaczenie, to te, których nikt poza Tobą nie zobaczy.</p>
+    </div>
+    <div class="specs">
+      <div class="spec">
+        <span class="spec__k">01 &middot; Opakowanie</span>
+        <h3>Zwykłe, bez oznaczeń</h3>
+        <p>Szary karton zewnętrzny. Bez logo, bez nazwy produktu, bez żadnej wskazówki co do zawartości na etykiecie.</p>
+      </div>
+      <div class="spec">
+        <span class="spec__k">02 &middot; Płatność</span>
+        <h3>Neutralny opis</h3>
+        <p>Na wyciągu bankowym zobaczysz neutralną nazwę, nigdy nazwy sklepu.</p>
+      </div>
+      <div class="spec">
+        <span class="spec__k">03 &middot; Dostawa</span>
+        <h3>24&ndash;48 h, bez oznaczeń</h3>
+        <p>Kurier lub paczkomat na terenie całej Polski. W Warszawie tego samego dnia przy zamówieniach do 13:00.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="materialy">
+  <div class="shell">
+    <div class="section__head">
+      <h2>Materiały, udokumentowane</h2>
+      <p>Przy każdym produkcie piszemy, z czego jest naprawdę zrobiony. Jeśli materiał nie jest bezpieczny dla ciała, nie mamy go w ofercie.</p>
+    </div>
+    <div class="specs">
+      <div class="spec">
+        <span class="spec__k">Silikon</span>
+        <h3>Wyłącznie medyczny</h3>
+        <p>Nieporowaty i w pełni sterylizowalny. Bez PVC, bez ftalanów, bez mieszanek typu „jelly".</p>
+      </div>
+      <div class="spec">
+        <span class="spec__k">Szkło</span>
+        <h3>Borokrzemowe</h3>
+        <p>Odprężane, bezszwowe, odporne na szok termiczny. Sprawdzane pojedynczo przed wysyłką.</p>
+      </div>
+      <div class="spec">
+        <span class="spec__k">Tkaniny</span>
+        <h3>Włókna naturalne</h3>
+        <p>Jedwab morwowy i koronka Leavers z europejskich przędzalni, z certyfikatami dostawców w dokumentacji.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="shell">
+    <div class="foot__grid">
+      <div class="foot__brand">
+        <span class="brand">Rose <em>Noir</em></span>
+        <p>Butik erotyczny premium. Warszawa.</p>
+      </div>
+      <div class="foot__col">
+        <h4>Sklep</h4>
+        <a href="#sklep">Zabawki</a>
+        <a href="#sklep">Bielizna</a>
+        <a href="#sklep">Krępowanie</a>
+        <a href="#sklep">Zestawy prezentowe</a>
+      </div>
+      <div class="foot__col">
+        <h4>O nas</h4>
+        <a href="#wysylka">Jak wysyłamy</a>
+        <a href="#materialy">Materiały</a>
+        <a href="mailto:kontakt@rosenoir.pl">Kontakt</a>
+      </div>
+      <div class="foot__col">
+        <h4>Informacje prawne</h4>
+        <a href="regulamin.html">Regulamin</a>
+        <a href="prywatnosc.html">Polityka prywatności</a>
+        <a href="zwroty.html">Zwroty</a>
+        <a href="polityka-18.html">Polityka 18+</a>
+      </div>
+    </div>
+    <div class="foot__bar">
+      <span>&copy; <span id="year">2026</span> Rose Noir</span>
+      <span class="badge">18+</span>
+    </div>
+  </div>
+</footer>
+
+<div class="drawer-scrim" id="cartScrim"></div>
+<aside class="drawer" id="cartDrawer" aria-hidden="true" aria-label="Koszyk">
+  <div class="drawer__head">
+    <h2>Koszyk</h2>
+    <button class="btn btn--ghost" id="cartClose" type="button">Zamknij</button>
+  </div>
+  <div class="drawer__body" id="cartBody"></div>
+  <div class="drawer__foot" id="cartFoot"></div>
+</aside>
+
+<script src="catalog.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  var grid = document.getElementById('grid');
+  var filters = document.getElementById('filters');
+  var active = 'all';
+
+  function cardHTML(p) {
+    return '' +
+      '<article class="card" data-cat="' + esc(p.cat) + '">' +
+        '<a class="card__media" href="produkt.html?id=' + encodeURIComponent(p.id) + '" aria-label="' + esc(p.name) + '">' + mediaInner(p) + '</a>' +
+        '<span class="card__cat">' + esc(catLabel(p.cat)) + '</span>' +
+        '<a class="card__name" href="produkt.html?id=' + encodeURIComponent(p.id) + '">' + esc(p.name) +
+          (p.tag ? ' <span class="tag">' + esc(p.tag) + '</span>' : '') +
+        '</a>' +
+        '<div class="card__meta">' +
+          '<span class="card__price">' + esc(zl(p.price)) + '</span>' +
+          '<span class="card__mat">' + esc(p.material) + '</span>' +
+        '</div>' +
+        '<button class="btn btn--block" type="button" data-add="' + esc(p.id) + '">Do koszyka</button>' +
+      '</article>';
+  }
+
+  function renderFilters() {
+    var html = '<button class="chip" aria-pressed="true" data-filter="all">Wszystko</button>';
+    for (var i = 0; i < CATEGORIES.length; i++) {
+      html += '<button class="chip" aria-pressed="false" data-filter="' + esc(CATEGORIES[i].id) + '">' + esc(CATEGORIES[i].label) + '</button>';
+    }
+    html += '<span class="toolbar__count" id="count"></span>';
+    filters.innerHTML = html;
+  }
+
+  function renderGrid() {
+    var shown = CATALOG.filter(function (p) { return active === 'all' || p.cat === active; });
+    if (!shown.length) {
+      grid.style.display = 'block';
+      grid.innerHTML = '<p class="card__empty">W tej kategorii nie mamy jeszcze nic w ofercie.</p>';
+    } else {
+      grid.style.display = '';
+      grid.innerHTML = shown.map(cardHTML).join('');
+    }
+    var c = document.getElementById('count');
+    if (c) c.textContent = shown.length + ' ' + plural(shown.length, 'produkt', 'produkty', 'produktów');
+  }
+
+  filters.addEventListener('click', function (e) {
+    var chip = e.target.closest('.chip');
+    if (!chip) return;
+    var all = filters.querySelectorAll('.chip');
+    for (var i = 0; i < all.length; i++) all[i].setAttribute('aria-pressed', 'false');
+    chip.setAttribute('aria-pressed', 'true');
+    active = chip.getAttribute('data-filter');
+    renderGrid();
+  });
+
+  renderFilters();
+  renderGrid();
+})();
+</script>
+</body>
+</html>

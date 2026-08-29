@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ewidencja sprzedaży — działalność nierejestrowana</title>
+<meta name="theme-color" content="#0B0B0E">
+<link rel="stylesheet" href="../style.css">
+<style>
+  .wrap { max-width: 60rem; margin: 0 auto; padding: 2rem var(--pad) 5rem; }
+  h1 { font-size: var(--t-2xl); margin-bottom: 0.3rem; }
+  .sub { color: var(--text-dim); font-size: var(--t-sm); margin: 0 0 1.75rem; }
+
+  .panels { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 1.5rem; }
+  @media (max-width: 760px) { .panels { grid-template-columns: minmax(0, 1fr); } }
+  .panel { border: 1px solid var(--border); border-radius: var(--r); padding: 1rem; background: var(--bg); }
+  .panel__k { font-size: var(--t-xs); color: var(--text-faint); display: block; margin-bottom: 0.35rem; }
+  .panel__v { font-size: var(--t-xl); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .panel__n { font-size: var(--t-xs); color: var(--text-faint); margin: 0.3rem 0 0; }
+
+  .bar { height: 6px; border-radius: 99px; background: var(--surface-2); overflow: hidden; margin-top: 0.6rem; }
+  .bar__fill { height: 100%; background: var(--ok); transition: width 0.3s ease, background 0.3s ease; }
+  .bar__fill.warn { background: var(--warn); }
+  .bar__fill.over { background: #D45B5B; }
+
+  form.add { display: grid; grid-template-columns: 130px minmax(0, 1fr) 130px auto; gap: 0.5rem; margin-bottom: 1.25rem; }
+  @media (max-width: 720px) { form.add { grid-template-columns: minmax(0, 1fr); } }
+  input, select {
+    background: var(--surface); border: 1px solid var(--border); color: var(--text);
+    border-radius: var(--r); padding: 0.55rem 0.7rem;
+    font-family: inherit; font-size: var(--t-sm); min-width: 0;
+  }
+  input:focus, select:focus { outline: none; border-color: var(--accent); }
+  input::placeholder { color: var(--text-faint); }
+
+  .tablewrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--r); }
+  table { width: 100%; border-collapse: collapse; font-size: var(--t-sm); min-width: 42rem; }
+  th, td { text-align: left; padding: 0.6rem 0.8rem; border-bottom: 1px solid var(--border); }
+  th { font-size: var(--t-xs); color: var(--text-faint); font-weight: 500; white-space: nowrap; }
+  tr:last-child td { border-bottom: 0; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tbody tr:hover { background: var(--surface); }
+  .del { background: none; border: 0; color: var(--text-faint); cursor: pointer; font-family: inherit; font-size: var(--t-xs); padding: 0; }
+  .del:hover { color: #E06C6C; }
+  .empty { padding: 2rem; text-align: center; color: var(--text-dim); font-size: var(--t-sm); }
+
+  .actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 1.25rem 0 2rem; }
+  .cfg { display: flex; gap: 0.75rem; align-items: flex-end; flex-wrap: wrap; margin-bottom: 1.5rem; }
+  .cfg label { font-size: var(--t-xs); color: var(--text-faint); display: block; margin-bottom: 0.25rem; }
+  h2 { font-size: var(--t-lg); margin: 2rem 0 0.75rem; }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="shell top__inner">
+    <a class="brand" href="../index.html">Rose <em>Noir</em></a>
+    <nav><a href="ewidencja.html" aria-current="page">Ewidencja</a></nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <h1>Ewidencja sprzedaży</h1>
+  <p class="sub">Działalność nierejestrowana &middot; wymagana prawnie uproszczona ewidencja sprzedaży za dany dzień.</p>
+
+  <div class="note" style="margin-bottom:1.75rem">
+    <strong>DO WERYFIKACJI.</strong> To narzędzie pomocnicze, nie program księgowy i nie porada
+    podatkowa. Limit miesięczny wynosi <strong>75% minimalnego wynagrodzenia</strong> i zmienia się
+    co roku — wpisz aktualną kwotę poniżej po sprawdzeniu na biznes.gov.pl. Zakres wymaganej
+    ewidencji potwierdź z księgowym lub w urzędzie skarbowym.
+  </div>
+
+  <div class="cfg">
+    <div>
+      <label for="cap">Limit miesięczny (zł, przychód)</label>
+      <input id="cap" type="number" step="0.01" min="0" style="width:11rem">
+    </div>
+    <div>
+      <label for="monthPick">Pokazywany miesiąc</label>
+      <input id="monthPick" type="month">
+    </div>
+    <button class="btn" id="saveCfg" type="button">Zapisz</button>
+  </div>
+
+  <div class="panels">
+    <div class="panel">
+      <span class="panel__k">PRZYCHÓD W MIESIĄCU</span>
+      <span class="panel__v" id="mTotal">0,00 zł</span>
+      <div class="bar"><div class="bar__fill" id="mBar" style="width:0%"></div></div>
+      <p class="panel__n" id="mPct">0% limitu</p>
+    </div>
+    <div class="panel">
+      <span class="panel__k">POZOSTAŁO DO LIMITU</span>
+      <span class="panel__v" id="mLeft">0,00 zł</span>
+      <p class="panel__n" id="mLeftNote">&nbsp;</p>
+    </div>
+    <div class="panel">
+      <span class="panel__k">PRZYCHÓD OD POCZĄTKU ROKU</span>
+      <span class="panel__v" id="yTotal">0,00 zł</span>
+      <p class="panel__n">Do rozliczenia w PIT-36 (inne źródła)</p>
+    </div>
+  </div>
+
+  <div id="alertBox"></div>
+
+  <h2>Dodaj sprzedaż</h2>
+  <form class="add" id="addForm">
+    <input id="fDate" type="date" required aria-label="Data sprzedaży">
+    <input id="fDesc" type="text" placeholder="Opis (nieobowiązkowy) — np. nr zamówienia" aria-label="Opis">
+    <input id="fAmt" type="number" step="0.01" min="0" placeholder="Kwota zł" required aria-label="Kwota sprzedaży">
+    <button class="btn btn--primary" type="submit">Dodaj</button>
+  </form>
+
+  <h2>Zapisy</h2>
+  <div class="tablewrap">
+    <table>
+      <thead>
+        <tr>
+          <th class="num">Lp.</th>
+          <th>Data sprzedaży</th>
+          <th>Opis</th>
+          <th class="num">Kwota sprzedaży</th>
+          <th class="num">Narastająco (mies.)</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+
+  <div class="actions">
+    <button class="btn" id="exportCsv" type="button">Eksport CSV (miesiąc)</button>
+    <button class="btn" id="exportAll" type="button">Eksport CSV (całość)</button>
+    <button class="btn" id="wipe" type="button">Usuń wszystkie dane</button>
+  </div>
+
+  <div class="note">
+    <strong>Obowiązki, o których łatwo zapomnieć.</strong> Ewidencję prowadź za każdy dzień
+    sprzedaży, nie zbiorczo na koniec miesiąca. Przychód liczy się <em>kasowo</em> — w dacie
+    otrzymania zapłaty, nie złożenia zamówienia. Jeśli w danym miesiącu przekroczysz limit,
+    działalność automatycznie przestaje być nierejestrowana i masz <strong>7 dni</strong> na
+    złożenie wniosku CEIDG. Wszystkie dane tego narzędzia siedzą wyłącznie w Twojej przeglądarce.
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var LS_ROWS = 'rn_ewid_rows_v1';
+  var LS_CAP  = 'rn_ewid_cap_v1';
+
+  var rows = [];
+  try { rows = JSON.parse(localStorage.getItem(LS_ROWS) || '[]'); } catch (e) { rows = []; }
+  if (!Array.isArray(rows)) rows = [];
+
+  var cap = parseFloat(localStorage.getItem(LS_CAP) || '');
+  if (!isFinite(cap) || cap <= 0) cap = 3499.50; /* 75% of 4666 zł — DO WERYFIKACJI for the current year */
+
+  var capEl = document.getElementById('cap');
+  var monthEl = document.getElementById('monthPick');
+
+  function todayISO() { return new Date().toISOString().slice(0, 10); }
+  function monthOf(iso) { return (iso || '').slice(0, 7); }
+
+  var viewMonth = monthOf(todayISO());
+
+  capEl.value = cap.toFixed(2);
+  monthEl.value = viewMonth;
+  document.getElementById('fDate').value = todayISO();
+
+  function pln(n) {
+    return n.toLocaleString('pl-PL', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' zł';
+  }
+
+  function esc(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  function save() {
+    try { localStorage.setItem(LS_ROWS, JSON.stringify(rows)); } catch (e) {}
+    render();
+  }
+
+  function monthRows() {
+    return rows
+      .filter(function (r) { return monthOf(r.date) === viewMonth; })
+      .sort(function (a, b) { return a.date < b.date ? -1 : a.date > b.date ? 1 : 0; });
+  }
+
+  function sum(list) { return list.reduce(function (s, r) { return s + r.amt; }, 0); }
+
+  function render() {
+    var mr = monthRows();
+    var mTotal = sum(mr);
+    var yTotal = sum(rows.filter(function (r) { return r.date.slice(0, 4) === viewMonth.slice(0, 4); }));
+    var pct = cap > 0 ? (mTotal / cap) * 100 : 0;
+    var left = cap - mTotal;
+
+    document.getElementById('mTotal').textContent = pln(mTotal);
+    document.getElementById('yTotal').textContent = pln(yTotal);
+    document.getElementById('mLeft').textContent = pln(Math.max(0, left));
+    document.getElementById('mPct').textContent = pct.toFixed(1).replace('.', ',') + '% limitu';
+
+    var bar = document.getElementById('mBar');
+    bar.style.width = Math.min(100, pct) + '%';
+    bar.className = 'bar__fill' + (pct >= 100 ? ' over' : pct >= 80 ? ' warn' : '');
+
+    var leftNote = document.getElementById('mLeftNote');
+    if (left < 0) {
+      leftNote.textContent = 'Limit przekroczony o ' + pln(-left);
+    } else if (mr.length) {
+      var avg = mTotal / mr.length;
+      leftNote.textContent = avg > 0 ? 'To jeszcze ok. ' + Math.floor(left / avg) + ' zamówień w tej średniej' : ' ';
+    } else {
+      leftNote.innerHTML = '&nbsp;';
+    }
+
+    var alertBox = document.getElementById('alertBox');
+    if (pct >= 100) {
+      alertBox.innerHTML = '<div class="note" style="border-color:rgba(212,91,91,.4);background:rgba(212,91,91,.08);color:#F0AFAF;margin-bottom:1.5rem">' +
+        '<strong>Limit przekroczony.</strong> Działalność przestała być nierejestrowana z chwilą przekroczenia. ' +
+        'Masz <strong>7 dni</strong> na złożenie wniosku o wpis do CEIDG. Nie przyjmuj kolejnych zamówień, ' +
+        'dopóki tego nie ogarniesz.</div>';
+    } else if (pct >= 80) {
+      alertBox.innerHTML = '<div class="note" style="margin-bottom:1.5rem">' +
+        '<strong>Zbliżasz się do limitu (' + pct.toFixed(0) + '%).</strong> ' +
+        'Przygotuj rejestrację JDG teraz, żeby nie musieć wstrzymywać sprzedaży w środku miesiąca.</div>';
+    } else {
+      alertBox.innerHTML = '';
+    }
+
+    var tb = document.getElementById('rows');
+    if (!mr.length) {
+      tb.innerHTML = '<tr><td colspan="6" class="empty">Brak zapisów w tym miesiącu.</td></tr>';
+      return;
+    }
+    var running = 0;
+    tb.innerHTML = mr.map(function (r, i) {
+      running += r.amt;
+      return '<tr>' +
+        '<td class="num">' + (i + 1) + '</td>' +
+        '<td>' + esc(r.date) + '</td>' +
+        '<td>' + esc(r.desc || '') + '</td>' +
+        '<td class="num">' + pln(r.amt) + '</td>' +
+        '<td class="num">' + pln(running) + '</td>' +
+        '<td><button class="del" data-id="' + esc(r.id) + '" type="button">usuń</button></td>' +
+      '</tr>';
+    }).join('');
+  }
+
+  document.getElementById('addForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var date = document.getElementById('fDate').value;
+    var amt = parseFloat(document.getElementById('fAmt').value);
+    if (!date || !isFinite(amt) || amt < 0) return;
+    rows.push({
+      id: String(Date.now()) + Math.random().toString(16).slice(2, 8),
+      date: date,
+      desc: document.getElementById('fDesc').value.trim(),
+      amt: amt
+    });
+    document.getElementById('fDesc').value = '';
+    document.getElementById('fAmt').value = '';
+    /* jump the view to the month just entered, so the row is visible */
+    viewMonth = monthOf(date);
+    monthEl.value = viewMonth;
+    save();
+  });
+
+  document.getElementById('rows').addEventListener('click', function (e) {
+    var b = e.target.closest('.del');
+    if (!b) return;
+    var id = b.getAttribute('data-id');
+    rows = rows.filter(function (r) { return r.id !== id; });
+    save();
+  });
+
+  document.getElementById('saveCfg').addEventListener('click', function () {
+    var v = parseFloat(capEl.value);
+    if (isFinite(v) && v > 0) {
+      cap = v;
+      try { localStorage.setItem(LS_CAP, String(cap)); } catch (e) {}
+    }
+    if (monthEl.value) viewMonth = monthEl.value;
+    render();
+  });
+
+  monthEl.addEventListener('change', function () {
+    if (monthEl.value) { viewMonth = monthEl.value; render(); }
+  });
+
+  function download(name, text) {
+    var blob = new Blob(["﻿" + text], { type: 'text/csv;charset=utf-8' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(a.href);
+  }
+
+  function toCsv(list) {
+    var out = ['Lp.;Data sprzedazy;Opis;Kwota sprzedazy;Narastajaco'];
+    var run = 0;
+    list.forEach(function (r, i) {
+      run += r.amt;
+      var d = (r.desc || '').replace(/;/g, ',').replace(/"/g, "'");
+      out.push([i + 1, r.date, d, r.amt.toFixed(2).replace('.', ','), run.toFixed(2).replace('.', ',')].join(';'));
+    });
+    return out.join('\r\n');
+  }
+
+  document.getElementById('exportCsv').addEventListener('click', function () {
+    download('ewidencja-' + viewMonth + '.csv', toCsv(monthRows()));
+  });
+
+  document.getElementById('exportAll').addEventListener('click', function () {
+    var all = rows.slice().sort(function (a, b) { return a.date < b.date ? -1 : 1; });
+    download('ewidencja-calosc.csv', toCsv(all));
+  });
+
+  document.getElementById('wipe').addEventListener('click', function () {
+    if (!confirm('Usunąć wszystkie zapisy ewidencji? Tego nie da się cofnąć.')) return;
+    rows = [];
+    save();
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
